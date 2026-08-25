@@ -45,6 +45,17 @@ section:not(.hero){max-width:1250px;margin:0 auto;padding:38px max(34px,5vw);scr
 .card-foot small{font-size:10px;color:#8ca0b8}
 .card button,.calculate,.btn-link{border:0;background:var(--blue);color:#fff;padding:9px 12px;border-radius:4px;font-weight:900;font-size:10px;letter-spacing:.06em;text-decoration:none;display:inline-block;cursor:pointer}
 .card button:hover,.calculate:hover,.btn-link:hover{background:var(--red)}
+.compare-promo{display:flex;align-items:center;justify-content:space-between;gap:20px}
+.compare-promo h3{margin:0 0 6px;color:var(--blue-dark)}
+.compare-promo p{margin:0}
+.comparison-table-wrap{background:#fff;border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);overflow:auto}
+.comparison-table{width:100%;border-collapse:collapse;min-width:860px;font-size:12px}
+.comparison-table th{background:var(--blue-dark);color:#fff;text-align:left;font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:13px 14px}
+.comparison-table td{padding:15px 14px;border-bottom:1px solid var(--line);color:var(--muted);vertical-align:top;line-height:1.5}
+.comparison-table tr:last-child td{border-bottom:0}
+.comparison-table td strong{color:var(--ink);font-weight:700}
+.comparison-table .standard-code{font-family:monospace;color:var(--blue);font-weight:950;white-space:nowrap}
+.comparison-page .notice{margin-top:20px}
 .calculator{background:#fff;border:1px solid var(--line);border-top:4px solid var(--red);border-radius:8px;padding:22px;margin-bottom:18px;box-shadow:var(--shadow)}
 .calc-head{display:flex;justify-content:space-between;align-items:center}
 .calc-head h3{margin:0;color:var(--blue-dark)}

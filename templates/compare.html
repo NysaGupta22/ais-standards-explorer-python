@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Compare Standards | AIS Explorer{% endblock %}
+{% block content %}
+<section class="calc-page compare-page">
+  <a class="back-link" href="{{ url_for('index') }}#standards">← Back to explorer</a>
+
+  <div class="calc-page-head">
+    <span class="code">COMPARISON WORKSPACE</span>
+    <h1>Compare AIS standards</h1>
+    <p>Use this dedicated reference page to scan readiness, EV applicability, available formulas and source coverage across the AIS register.</p>
+  </div>
+
+  <div class="comparison-table-wrap">
+    <table class="comparison-table">
+      <thead>
+        <tr><th>Standard</th><th>Title</th><th>Status</th><th>Applicability</th><th>Formula coverage</th><th>Source</th></tr>
+      </thead>
+      <tbody>
+        {% for s in standards %}
+        <tr>
+          <td class="standard-code">{{ s.code }}</td>
+          <td><strong>{{ s.title }}</strong></td>
+          <td><span class="tag {{ 'ready' if s.ready else '' }}">{{ 'CALC' if s.ready else 'METADATA' }}</span></td>
+          <td>{{ 'EV / powertrain' if s.ev else 'General vehicle' }}</td>
+          <td>{{ s.formulas|join(' · ') if s.formulas else 'Not supplied' }}</td>
+          <td>{{ s.source }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="notice"><b>Engineering note:</b> compare this register against the controlled/current AIS source before certification or regulatory submission.</div>
+</section>
+{% endblock %}

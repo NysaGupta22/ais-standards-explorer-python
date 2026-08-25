@@ -45,6 +45,11 @@ def standards():
     return jsonify(STANDARDS)
 
 
+@app.route('/compare')
+def compare_page():
+    return render_template('compare.html', standards=STANDARDS)
+
+
 @app.route('/calculator/<slug>')
 def calculator_page(slug):
     meta = CALC_PAGES.get(slug)
