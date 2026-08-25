@@ -152,3 +152,62 @@
 </section>
 
 {% endblock %}
+
+<section class="standard-comparison">
+
+  <div class="section-title">
+    <h2>Comparative Study</h2>
+    <span>ENGINEERING CONTEXT</span>
+  </div>
+
+  <div class="comparison-grid">
+
+    <div class="comparison-card">
+      <span>PRIMARY ROLE</span>
+      <h3>{{ standard.comparative_study.primary_role }}</h3>
+    </div>
+
+    <div class="comparison-card">
+      <span>MAIN OUTPUT</span>
+      <h3>{{ standard.comparative_study.main_output }}</h3>
+    </div>
+
+    <div class="comparison-card">
+      <span>ENGINEERING DOMAIN</span>
+      <h3>{{ standard.comparative_study.engineering_domain }}</h3>
+    </div>
+
+  </div>
+
+  <div class="comparison-note">
+
+    <span>COMPARATIVE ANALYSIS</span>
+
+    <p>
+      {{ standard.comparative_study.comparison_note }}
+    </p>
+
+  </div>
+
+  <div class="comparison-related">
+
+    <span>BEST COMPARED WITH</span>
+
+    <div class="related-list">
+
+      {% for related in standard.comparative_study.best_compared_with %}
+
+        <a
+          href="{{ url_for('standard_detail', code=related) }}"
+          class="related-standard"
+        >
+          {{ related }}
+        </a>
+
+      {% endfor %}
+
+    </div>
+
+  </div>
+
+</section>
