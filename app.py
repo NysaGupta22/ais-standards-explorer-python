@@ -1,6 +1,6 @@
 from flask import Flask, render_template, jsonify, request, abort
 import math
-
+from data.standards import STANDARDS
 app = Flask(__name__)
 
 STANDARDS = [
@@ -125,3 +125,31 @@ def compare():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+@app.route("/standards")
+def standards():
+    return render_template(
+        "standards.html",
+        standards=STANDARDS
+    )
+
+
+@app.route("/standards/<code>")
+def standard_detail(code):
+    standard = STANDARDS.get(code)
+
+    if standard is None:
+        return "Standard not found", 404
+
+    return render_template(
+        "standard.html",
+        standard=standard
+    )
+
+
+@app.route("/compare")
+def compare():
+    return render_template(
+        "compare.html",
+        standards=STANDARDS
+    )

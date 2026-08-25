@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ standard.code }} — {{ standard.title }} | AIS Explorer
+{% endblock %}
+
+{% block content %}
+
+<section class="standard-page">
+
+  <a class="back-link" href="{{ url_for('standards') }}">
+    ← Back to standards
+  </a>
+
+
+  <div class="standard-detail-head">
+
+    <span class="code">
+      {{ standard.code }}
+    </span>
+
+    <h1>{{ standard.title }}</h1>
+
+    <p>{{ standard.overview }}</p>
+
+  </div>
+
+
+  <div class="standard-info-grid">
+
+    <div class="info-panel">
+      <span>STANDARD OVERVIEW</span>
+      <h2>Purpose</h2>
+      <p>{{ standard.purpose }}</p>
+    </div>
+
+
+    <div class="info-panel">
+      <span>SCOPE</span>
+      <h2>What it covers</h2>
+      <p>{{ standard.scope }}</p>
+    </div>
+
+
+    <div class="info-panel">
+      <span>APPLICABILITY</span>
+      <h2>Vehicle / System</h2>
+      <p>{{ standard.vehicle_type }}</p>
+    </div>
+
+
+    <div class="info-panel">
+      <span>CATEGORY</span>
+      <h2>Engineering area</h2>
+      <p>{{ standard.category }}</p>
+    </div>
+
+  </div>
+
+
+  <section class="standard-history">
+
+    <div class="section-title">
+      <h2>Revision & Amendment History</h2>
+      <span>REFERENCE</span>
+    </div>
+
+    <div class="history-grid">
+
+      <div class="history-card">
+        <h3>Revisions</h3>
+
+        <ul>
+          {% for item in standard.revision_history %}
+            <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+
+      <div class="history-card">
+        <h3>Amendments / Corrigenda</h3>
+
+        {% if standard.amendments %}
+
+        <ul>
+          {% for item in standard.amendments %}
+            <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+
+        {% else %}
+
+        <p>No amendment information currently entered.</p>
+
+        {% endif %}
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <section class="standard-relations">
+
+    <div class="section-title">
+      <h2>Related Standards</h2>
+      <span>ENGINEERING CONTEXT</span>
+    </div>
+
+    <div class="related-list">
+
+      {% for related in standard.related_standards %}
+
+        <a
+          href="{{ url_for('standard_detail', code=related) }}"
+          class="related-standard"
+        >
+          {{ related }}
+        </a>
+
+      {% endfor %}
+
+    </div>
+
+  </section>
+
+
+  <div class="standard-actions">
+
+    {% if standard.calculator_available %}
+
+      <a
+        class="btn-link"
+        href="{{ url_for('index') }}#calculators"
+      >
+        OPEN CALCULATOR
+      </a>
+
+    {% endif %}
+
+    <a
+      class="btn-link secondary"
+      href="{{ url_for('compare') }}"
+    >
+      COMPARE STANDARD
+    </a>
+
+  </div>
+
+</section>
+
+{% endblock %}

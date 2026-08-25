@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block title %}AIS Standards Overview | AIS Explorer{% endblock %}
+
+{% block content %}
+
+<section class="standards-page">
+
+  <a class="back-link" href="{{ url_for('index') }}">
+    ← Back to dashboard
+  </a>
+
+  <div class="standards-page-head">
+
+    <div>
+      <span class="eyebrow">AIS REFERENCE LIBRARY</span>
+
+      <h1>Standards Overview</h1>
+
+      <p>
+        Explore the Automotive Industry Standards included in the
+        AIS Explorer. This section provides an overview of each
+        standard, its scope, applicability, revisions and engineering
+        context.
+      </p>
+    </div>
+
+    <div class="standard-count">
+      <strong>{{ standards|length }}</strong>
+      <span>STANDARDS TRACKED</span>
+    </div>
+
+  </div>
+
+
+  <div class="standard-overview-grid">
+
+    {% for code, standard in standards.items() %}
+
+    <article class="overview-card">
+
+      <div class="overview-card-head">
+
+        <span class="overview-code">
+          {{ standard.code }}
+        </span>
+
+        {% if standard.formula_available %}
+          <span class="tag ready">FORMULA AVAILABLE</span>
+        {% else %}
+          <span class="tag">REFERENCE</span>
+        {% endif %}
+
+      </div>
+
+
+      <h2>{{ standard.title }}</h2>
+
+
+      <p class="overview-text">
+        {{ standard.overview }}
+      </p>
+
+
+      <div class="overview-meta">
+
+        <div>
+          <span>CATEGORY</span>
+          <strong>{{ standard.category }}</strong>
+        </div>
+
+        <div>
+          <span>VEHICLE / SYSTEM</span>
+          <strong>{{ standard.vehicle_type }}</strong>
+        </div>
+
+        <div>
+          <span>EV RELATED</span>
+          <strong>
+            {% if standard.ev_related %}
+              YES
+            {% else %}
+              NO
+            {% endif %}
+          </strong>
+        </div>
+
+        <div>
+          <span>CALCULATOR</span>
+          <strong>
+            {% if standard.calculator_available %}
+              AVAILABLE
+            {% else %}
+              REFERENCE
+            {% endif %}
+          </strong>
+        </div>
+
+      </div>
+
+
+      <div class="overview-footer">
+
+        <span>
+          {{ standard.revision_history|length }}
+          revision record{% if standard.revision_history|length != 1 %}s{% endif %}
+        </span>
+
+        <a
+          class="btn-link"
+          href="{{ url_for('standard_detail', code=code) }}"
+        >
+          VIEW STANDARD
+        </a>
+
+      </div>
+
+    </article>
+
+    {% endfor %}
+
+  </div>
+
+</section>
+
+{% endblock %}
