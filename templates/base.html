@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{% block title %}AIS Standards Explorer | JSW Powertrain{% endblock %}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <div class="brand-mark">JSW</div>
+    <div>
+      <div class="brand-title">AIS EXPLORER</div>
+      <div class="brand-sub">POWERTRAIN DEPARTMENT</div>
+    </div>
+  </div>
+  <div class="top-status"><span></span> INTERNAL ENGINEERING TOOL</div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="nav-label">EXPLORE</div>
+    <a href="{{ url_for('index') }}#dashboard">Dashboard</a>
+    <a href="{{ url_for('index') }}#standards">Standards</a>
+    <a href="{{ url_for('index') }}#calculators">Calculators</a>
+    <a href="{{ url_for('index') }}#compare">Compare</a>
+    <div class="nav-label">APPLICABILITY</div>
+    <a href="{{ url_for('index') }}#ev">EV Standards</a>
+    <a href="{{ url_for('index') }}#compliance">Compliance</a>
+    <div class="nav-label">DATA</div>
+    <a href="{{ url_for('index') }}#data">Data Requirements</a>
+  </aside>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+</div>
+
+<footer>JSW Powertrain — AIS Standards Explorer · Internal engineering reference · Red / blue / white UI</footer>
+
+{% block scripts %}{% endblock %}
+</body>
+</html>

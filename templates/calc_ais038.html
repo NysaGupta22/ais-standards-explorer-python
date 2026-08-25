@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}AIS-038 — Traction Battery Insulation Resistance | AIS Explorer{% endblock %}
+{% block content %}
+<section class="calc-page">
+  <a class="back-link" href="{{ url_for('index') }}#calculators">← Back to explorer</a>
+
+  <div class="calc-page-head">
+    <span class="code">AIS-038</span>
+    <h1>Traction Battery Insulation Resistance</h1>
+    <p>Electric power train construction and functional safety requirement: minimum insulation resistance between the traction battery and chassis, measured with a reference resistor R0.</p>
+  </div>
+
+  <div class="eq-block">
+    <div class="eq-label">Insulation resistance</div>
+    <div class="eq">
+      <span class="v">R</span><sub>i</sub> =
+      <span class="frac"><span class="num"><span class="v">V</span><sub>1</sub> − <span class="v">V</span><sub>2</sub></span><span class="den"><span class="v">V</span><sub>2</sub></span></span>
+      × <span class="v">R</span><sub>0</sub>
+    </div>
+    <div class="eq-label" style="margin-top:16px">Minimum required</div>
+    <div class="eq"><span class="v">R</span><sub>min</sub> = <span class="v">U</span> × 500 Ω</div>
+  </div>
+
+  <div class="calculator">
+    <div class="form-grid">
+      {% for id,label,val in [('u38','Nominal battery voltage U (V)','400'),('v138','Measured V1 (V)','420'),('vp38','Measured V1′ (V)','420'),('v238','Measured V2 (V)','210')] %}
+      <label>{{label}}<input id="{{id}}" value="{{val}}" type="number"></label>
+      {% endfor %}
+    </div>
+    <button class="calculate" onclick="calc038()">CALCULATE</button>
+    <div id="out038" class="result">Enter measurements and calculate.</div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='calc.js') }}"></script>{% endblock %}

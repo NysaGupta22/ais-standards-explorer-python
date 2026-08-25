@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}AIS-048 — Battery Capacity & C Rate | AIS Explorer{% endblock %}
+{% block content %}
+<section class="calc-page">
+  <a class="back-link" href="{{ url_for('index') }}#calculators">← Back to explorer</a>
+
+  <div class="calc-page-head">
+    <span class="code">AIS-048</span>
+    <h1>Battery Capacity &amp; C Rate</h1>
+    <p>Traction battery safety requirement: current drawn and discharge duration implied by a stated capacity and C-rate.</p>
+  </div>
+
+  <div class="eq-block">
+    <div class="eq-label">Current drawn</div>
+    <div class="eq"><span class="v">I</span> = <span class="v">C</span><sub>capacity</sub> × <span class="v">c</span><sub>rate</sub></div>
+    <div class="eq-label" style="margin-top:16px">Discharge duration</div>
+    <div class="eq">
+      <span class="v">t</span> =
+      <span class="frac"><span class="num">1</span><span class="den"><span class="v">c</span><sub>rate</sub></span></span>
+    </div>
+  </div>
+
+  <div class="calculator">
+    <div class="form-grid">
+      {% for id,label,val in [('cap48','Battery capacity (Ah)','300'),('crate48','C rate','0.5')] %}
+      <label>{{label}}<input id="{{id}}" value="{{val}}" type="number"></label>
+      {% endfor %}
+    </div>
+    <button class="calculate" onclick="calc048()">CALCULATE</button>
+    <div id="out048" class="result">Enter values and calculate.</div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='calc.js') }}"></script>{% endblock %}

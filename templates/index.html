@@ -1,16 +1,93 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AIS Standards Explorer | JSW Powertrain</title><link rel="stylesheet" href="/static/style.css"></head><body>
-<header class="top"><div class="brand"><div class="brand-mark">JSW</div><div><div class="brand-title">AIS EXPLORER</div><div class="brand-sub">POWERTRAIN DEPARTMENT</div></div></div><div class="top-status"><span></span> INTERNAL ENGINEERING TOOL</div></header>
-<div class="layout"><aside class="sidebar"><div class="nav-label">EXPLORE</div><a href="#dashboard">Dashboard</a><a href="#standards">Standards</a><a href="#calculators">Calculators</a><a href="#compare">Compare</a><div class="nav-label">APPLICABILITY</div><a href="#ev">EV Standards</a><a href="#compliance">Compliance</a><div class="nav-label">DATA</div><a href="#data">Data Requirements</a></aside>
-<main><section id="dashboard" class="hero"><div class="eyebrow">AUTOMOTIVE INDUSTRY STANDARDS</div><h1>AIS Standards Explorer</h1><p>Formula-ready reference and calculation workspace for the 15 AIS standards tracked by the Powertrain Department.</p><div class="metrics"><div><strong>{{ standards|length }}</strong><small>STANDARDS TRACKED</small></div><div><strong>{{ standards|selectattr('ready')|list|length }}</strong><small>FORMULA CALCULATORS</small></div><div><strong>{{ standards|rejectattr('ready')|list|length }}</strong><small>METADATA ONLY</small></div><div><strong>40%</strong><small>FORMULA COVERAGE</small></div></div><div class="notice"><b>Engineering note:</b> outputs are an internal reference implementation based on supplied workbooks/screenshots. Validate against the controlled/current AIS source before certification or regulatory submission.</div></section>
-<section id="standards"><div class="section-title"><h2>Standards register</h2><span>15 standards</span></div><div class="toolbar"><input id="search" placeholder="Search AIS number or title…"><select id="filter"><option value="all">All</option><option value="ready">Formula-ready</option><option value="metadata">Metadata-only</option></select></div><div id="cards" class="grid">{% for s in standards %}<article class="card standard" data-text="{{ (s.code+' '+s.title)|lower }}" data-ready="{{ 'ready' if s.ready else 'metadata' }}"><div class="card-head"><b>{{s.code}}</b><span class="tag {{'ready' if s.ready else ''}}">{{'CALC' if s.ready else 'METADATA'}}</span></div><h3>{{s.title}}</h3><p>{{s.formulas|join(' • ') if s.formulas else 'Formula source not loaded.'}}</p><div class="card-foot"><small>{{s.source}}</small>{% if s.ready %}<button onclick="openCalc('{{s.code}}')">OPEN CALCULATOR</button>{% endif %}</div></article>{% endfor %}</div></section>
-<section id="calculators"><div class="section-title"><h2>Formula calculators</h2><span>Python backend</span></div>
-<div class="calculator"><div class="calc-head"><h3>AIS-003 — Starting Gradeability</h3><span>AIS-003</span></div><div class="formula">G = 100 × tan[ sin⁻¹( (sin q × WT) / WR ) ]</div><div class="form-grid">{% for id,label,val in [('q','Slope angle q (°)','16'),('wt','Vehicle weight WT (kg)','2400'),('wr','Max GVW WR (kg)','2300'),('go','Tested gradeability Go (%)','30'),('to','Test torque To (Nm)','200'),('tn','Modified torque Tn (Nm)','220'),('gro','Test ratio Gro','4.1'),('grn','Modified ratio Grn','4.3'),('gvwo','Test GVW (kg)','2300'),('gvwn','Modified GVW (kg)','2400'),('tro','Test radius (m)','0.3'),('trn','Modified radius (m)','0.31')] %}<label>{{label}}<input id="{{id}}" value="{{val}}" type="number"></label>{% endfor %}</div><button class="calculate" onclick="calc003()">CALCULATE</button><div id="out003" class="result">Enter values and calculate.</div></div>
-<div class="calculator"><div class="calc-head"><h3>AIS-038 — Traction Battery Insulation Resistance</h3><span>AIS-038</span></div><div class="formula">Ri = ((V1 − V2) / V2) × R0 &nbsp; | &nbsp; Minimum = U × 500 Ω</div><div class="form-grid">{% for id,label,val in [('u38','Nominal battery voltage U (V)','400'),('v138','Measured V1 (V)','420'),('vp38','Measured V1′ (V)','420'),('v238','Measured V2 (V)','210')] %}<label>{{label}}<input id="{{id}}" value="{{val}}" type="number"></label>{% endfor %}</div><button class="calculate" onclick="calc038()">CALCULATE</button><div id="out038" class="result">Enter measurements and calculate.</div></div>
-<div class="calculator"><div class="calc-head"><h3>AIS-039 — Energy Consumption & Capacity Correction</h3><span>AIS-039</span></div><div class="formula">Capacity@27°C = Ct + Ct×R×(27−t)/100 &nbsp; | &nbsp; C = E/D</div><div class="form-grid">{% for id,label,val in [('ct39','Observed capacity Ct','100'),('t39','Temperature t (°C)','27'),('r39','Variation factor R','0.43'),('e39','Energy E (Wh)','15000'),('d39','Distance D (km)','100'),('m39','Declared consumption (Wh/km)','150')] %}<label>{{label}}<input id="{{id}}" value="{{val}}" type="number"></label>{% endfor %}</div><button class="calculate" onclick="calc039()">CALCULATE</button><div id="out039" class="result">Enter values and calculate.</div></div>
-<div class="calculator"><div class="calc-head"><h3>AIS-048 — Battery Capacity & C Rate</h3><span>AIS-048</span></div><div class="formula">Current drawn = Battery capacity × C rate &nbsp; | &nbsp; Duration = 1/C rate</div><div class="form-grid">{% for id,label,val in [('cap48','Battery capacity (Ah)','300'),('crate48','C rate','0.5')] %}<label>{{label}}<input id="{{id}}" value="{{val}}" type="number"></label>{% endfor %}</div><button class="calculate" onclick="calc048()">CALCULATE</button><div id="out048" class="result">Enter values and calculate.</div></div>
-<div class="calculator"><div class="calc-head"><h3>AIS-138 — Charging / Body / Leakage Current</h3><span>AIS-138</span></div><div class="formula">Ih = Vdc×(R+Rf)/(R×Rf) &nbsp; | &nbsp; Ig = Vdc/(R+2Rf)</div><div class="form-grid"><label>Charging current (A)<input id="i138" value="10" type="number"></label><label>Range<select id="range138"><option value="low">6–51 A</option><option value="high">51–80 A</option></select></label><label>DC voltage Vdc (V)<input id="vdc138" value="400" type="number"></label><label>Grounding resistor R (Ω)<input id="rg138" value="100" type="number"></label><label>Insulation Rf (Ω)<input id="rf138" value="200" type="number"></label></div><button class="calculate" onclick="calc138()">CALCULATE</button><div id="out138" class="result">Enter values and calculate.</div></div></section>
-<section id="compare"><div class="section-title"><h2>Compare</h2><span>Quick reference</span></div><div class="card"><p>Select and compare standards from the register. This can later become a clause-by-clause engineering comparison.</p></div></section>
-<section id="ev"><div class="section-title"><h2>EV standards</h2><span>Powertrain / electric vehicle</span></div><div class="grid">{% for s in standards if s.ev %}<article class="card"><div class="card-head"><b>{{s.code}}</b><span class="tag {{'ready' if s.ready else ''}}">{{'CALC' if s.ready else 'METADATA'}}</span></div><h3>{{s.title}}</h3></article>{% endfor %}</div></section>
-<section id="compliance"><div class="section-title"><h2>Compliance workspace</h2><span>Internal reference</span></div><div class="card"><p><b class="blue">FORMULA-READY</b> means a calculator has been implemented from supplied source material.</p><p><b class="red">METADATA-ONLY</b> means the standard is tracked but no formula workbook was supplied.</p><p>Verify results against the controlled/current AIS publication before certification use.</p></div></section>
-<section id="data"><div class="section-title"><h2>Data requirements</h2><span>Next development stage</span></div><div class="grid"><div class="card"><h3>Formula standards</h3><p>Add clause/page reference, units, variable definitions, validation examples and controlled revision.</p></div><div class="card"><h3>Metadata standards</h3><p>Add official title, revision, applicability, test procedure and formula workbook when available.</p></div></div></section>
-<footer>JSW Powertrain — AIS Standards Explorer · Internal engineering reference · Red / blue / white UI</footer></main></div><script src="/static/app.js"></script></body></html>
+{% extends "base.html" %}
+{% block content %}
+
+<section id="dashboard" class="hero">
+  <div class="eyebrow">AUTOMOTIVE INDUSTRY STANDARDS</div>
+  <h1>AIS Standards Explorer</h1>
+  <p>Formula-ready reference and calculation workspace for the 15 AIS standards tracked by the Powertrain Department.</p>
+  <div class="metrics">
+    <div><strong>{{ standards|length }}</strong><small>STANDARDS TRACKED</small></div>
+    <div><strong>{{ standards|selectattr('ready')|list|length }}</strong><small>FORMULA CALCULATORS</small></div>
+    <div><strong>{{ standards|rejectattr('ready')|list|length }}</strong><small>METADATA ONLY</small></div>
+    <div><strong>40%</strong><small>FORMULA COVERAGE</small></div>
+  </div>
+  <div class="notice"><b>Engineering note:</b> outputs are an internal reference implementation based on supplied workbooks/screenshots. Validate against the controlled/current AIS source before certification or regulatory submission.</div>
+</section>
+
+<section id="standards">
+  <div class="section-title"><h2>Standards register</h2><span>15 standards</span></div>
+  <div class="toolbar">
+    <input id="search" placeholder="Search AIS number or title…">
+    <select id="filter">
+      <option value="all">All</option>
+      <option value="ready">Formula-ready</option>
+      <option value="metadata">Metadata-only</option>
+    </select>
+  </div>
+  <div id="cards" class="grid">
+    {% for s in standards %}
+    <article class="card standard" data-text="{{ (s.code+' '+s.title)|lower }}" data-ready="{{ 'ready' if s.ready else 'metadata' }}">
+      <div class="card-head"><b>{{s.code}}</b><span class="tag {{'ready' if s.ready else ''}}">{{'CALC' if s.ready else 'METADATA'}}</span></div>
+      <h3>{{s.title}}</h3>
+      <p>{{s.formulas|join(' • ') if s.formulas else 'Formula source not loaded.'}}</p>
+      <div class="card-foot">
+        <small>{{s.source}}</small>
+        {% if s.ready and s.code.lower() in calc_pages %}
+        <a class="btn-link" href="{{ url_for('calculator_page', slug=s.code.lower()) }}">OPEN CALCULATOR →</a>
+        {% endif %}
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section id="calculators">
+  <div class="section-title"><h2>Formula calculators</h2><span>{{ calc_pages|length }} standalone pages</span></div>
+  <div class="grid">
+    {% for slug, meta in calc_pages.items() %}
+    <article class="card calc-index-card">
+      <div class="card-head"><b>{{ meta.code }}</b><span class="tag ready">CALC</span></div>
+      <h3>{{ meta.title }}</h3>
+      <p>Opens in its own page with inputs, live result and the full worked formula.</p>
+      <div class="card-foot">
+        <small>/calculator/{{ slug }}</small>
+        <a class="btn-link" href="{{ url_for('calculator_page', slug=slug) }}">OPEN CALCULATOR →</a>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section id="compare">
+  <div class="section-title"><h2>Compare</h2><span>Quick reference</span></div>
+  <div class="card"><p>Select and compare standards from the register. This can later become a clause-by-clause engineering comparison.</p></div>
+</section>
+
+<section id="ev">
+  <div class="section-title"><h2>EV standards</h2><span>Powertrain / electric vehicle</span></div>
+  <div class="grid">
+    {% for s in standards if s.ev %}
+    <article class="card"><div class="card-head"><b>{{s.code}}</b><span class="tag {{'ready' if s.ready else ''}}">{{'CALC' if s.ready else 'METADATA'}}</span></div><h3>{{s.title}}</h3></article>
+    {% endfor %}
+  </div>
+</section>
+
+<section id="compliance">
+  <div class="section-title"><h2>Compliance workspace</h2><span>Internal reference</span></div>
+  <div class="card">
+    <p><b class="blue">FORMULA-READY</b> means a calculator has been implemented from supplied source material.</p>
+    <p><b class="red">METADATA-ONLY</b> means the standard is tracked but no formula workbook was supplied.</p>
+    <p>Verify results against the controlled/current AIS publication before certification use.</p>
+  </div>
+</section>
+
+<section id="data">
+  <div class="section-title"><h2>Data requirements</h2><span>Next development stage</span></div>
+  <div class="grid">
+    <div class="card"><h3>Formula standards</h3><p>Add clause/page reference, units, variable definitions, validation examples and controlled revision.</p></div>
+    <div class="card"><h3>Metadata standards</h3><p>Add official title, revision, applicability, test procedure and formula workbook when available.</p></div>
+  </div>
+</section>
+
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='app.js') }}"></script>{% endblock %}

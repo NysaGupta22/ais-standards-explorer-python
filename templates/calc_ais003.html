@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}AIS-003 — Starting Gradeability | AIS Explorer{% endblock %}
+{% block content %}
+<section class="calc-page">
+  <a class="back-link" href="{{ url_for('index') }}#calculators">← Back to explorer</a>
+
+  <div class="calc-page-head">
+    <span class="code">AIS-003</span>
+    <h1>Starting Gradeability</h1>
+    <p>Method of measurement and requirements for the maximum gradient a vehicle can start on, and the extrapolation of a bench test result to a different vehicle weight, torque or wheel radius.</p>
+  </div>
+
+  <div class="eq-block">
+    <div class="eq-label">Starting gradeability</div>
+    <div class="eq">
+      <span class="v">G</span> = 100 × tan<span class="brk">[</span> sin<sup>−1</sup><span class="brk">(</span>
+      <span class="frac"><span class="num">sin <span class="v">q</span> × <span class="v">W</span><sub>T</sub></span><span class="den"><span class="v">W</span><sub>R</sub></span></span>
+      <span class="brk">)</span><span class="brk">]</span>
+    </div>
+    <div class="eq-label" style="margin-top:16px">Extrapolated gradeability</div>
+    <div class="eq">
+      <span class="v">G</span><sub>n</sub> =
+      <span class="frac"><span class="num"><span class="v">T</span><sub>n</sub></span><span class="den"><span class="v">T</span><sub>o</sub></span></span> ×
+      <span class="frac"><span class="num"><span class="v">Gr</span><sub>n</sub></span><span class="den"><span class="v">Gr</span><sub>o</sub></span></span> ×
+      <span class="frac"><span class="num"><span class="v">GVW</span><sub>o</sub></span><span class="den"><span class="v">GVW</span><sub>n</sub></span></span> ×
+      <span class="frac"><span class="num"><span class="v">r</span><sub>o</sub></span><span class="den"><span class="v">r</span><sub>n</sub></span></span> ×
+      <span class="v">G</span><sub>o</sub>
+    </div>
+  </div>
+
+  <div class="calculator">
+    <div class="form-grid">
+      {% for id,label,val in [('q','Slope angle q (°)','16'),('wt','Vehicle weight WT (kg)','2400'),('wr','Max GVW WR (kg)','2300'),('go','Tested gradeability Go (%)','30'),('to','Test torque To (Nm)','200'),('tn','Modified torque Tn (Nm)','220'),('gro','Test ratio Gro','4.1'),('grn','Modified ratio Grn','4.3'),('gvwo','Test GVW (kg)','2300'),('gvwn','Modified GVW (kg)','2400'),('tro','Test radius (m)','0.3'),('trn','Modified radius (m)','0.31')] %}
+      <label>{{label}}<input id="{{id}}" value="{{val}}" type="number"></label>
+      {% endfor %}
+    </div>
+    <button class="calculate" onclick="calc003()">CALCULATE</button>
+    <div id="out003" class="result">Enter values and calculate.</div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='calc.js') }}"></script>{% endblock %}

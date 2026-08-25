@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}AIS-039 — Energy Consumption & Capacity Correction | AIS Explorer{% endblock %}
+{% block content %}
+<section class="calc-page">
+  <a class="back-link" href="{{ url_for('index') }}#calculators">← Back to explorer</a>
+
+  <div class="calc-page-head">
+    <span class="code">AIS-039</span>
+    <h1>Energy Consumption &amp; Capacity Correction</h1>
+    <p>Corrects an observed battery capacity to a 27 °C reference, and calculates electric energy consumption against the manufacturer's declared figure and the AIS-039 4% tolerance.</p>
+  </div>
+
+  <div class="eq-block">
+    <div class="eq-label">Capacity correction to 27 °C</div>
+    <div class="eq">
+      <span class="v">Capacity</span><sub>27°C</sub> = <span class="v">C</span><sub>t</sub> +
+      <span class="frac"><span class="num"><span class="v">C</span><sub>t</sub> × <span class="v">R</span> × (27 − <span class="v">t</span>)</span><span class="den">100</span></span>
+    </div>
+    <div class="eq-label" style="margin-top:16px">Energy consumption</div>
+    <div class="eq">
+      <span class="v">C</span> = <span class="frac"><span class="num"><span class="v">E</span></span><span class="den"><span class="v">D</span></span></span>
+      &nbsp;&nbsp;&nbsp; 4% limit = <span class="v">C</span><sub>declared</sub> × 1.04
+    </div>
+  </div>
+
+  <div class="calculator">
+    <div class="form-grid">
+      {% for id,label,val in [('ct39','Observed capacity Ct','100'),('t39','Temperature t (°C)','27'),('r39','Variation factor R','0.43'),('e39','Energy E (Wh)','15000'),('d39','Distance D (km)','100'),('m39','Declared consumption (Wh/km)','150')] %}
+      <label>{{label}}<input id="{{id}}" value="{{val}}" type="number"></label>
+      {% endfor %}
+    </div>
+    <button class="calculate" onclick="calc039()">CALCULATE</button>
+    <div id="out039" class="result">Enter values and calculate.</div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='calc.js') }}"></script>{% endblock %}
