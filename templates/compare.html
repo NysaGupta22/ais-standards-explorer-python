@@ -1,0 +1,635 @@
+{% extends "base.html" %}
+
+{% block title %}
+AIS Comparative Study | AIS Explorer
+{% endblock %}
+
+{% block content %}
+
+<section class="compare-page">
+
+    <!-- PAGE HEADER -->
+
+    <div class="compare-page-head">
+
+        <div>
+
+            <span class="page-kicker">
+                AIS STANDARDS
+            </span>
+
+            <h1>Comparative Study</h1>
+
+            <p>
+                Compare two Automotive Industry Standards side by side
+                across their scope, purpose, formulas, requirements,
+                applicability and technical characteristics.
+            </p>
+
+        </div>
+
+        <div class="compare-status">
+            <span class="status-dot"></span>
+            INTERNAL ENGINEERING TOOL
+        </div>
+
+    </div>
+
+
+    <!-- STANDARD SELECTION -->
+
+    <div class="compare-selector">
+
+        <div class="selector-header">
+
+            <div>
+                <span class="section-kicker">
+                    SELECT STANDARDS
+                </span>
+
+                <h2>Choose two standards to compare</h2>
+            </div>
+
+            <span class="compare-count">
+                {{ standards|length }} standards tracked
+            </span>
+
+        </div>
+
+
+        <div class="selector-grid">
+
+            <!-- STANDARD A -->
+
+            <div class="standard-selector standard-a">
+
+                <label for="standardA">
+                    STANDARD A
+                </label>
+
+                <select id="standardA">
+
+                    {% for standard in standards %}
+
+                    <option value="{{ standard }}">
+                        {{ standard }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <!-- VS -->
+
+            <div class="vs-box">
+                VS
+            </div>
+
+
+            <!-- STANDARD B -->
+
+            <div class="standard-selector standard-b">
+
+                <label for="standardB">
+                    STANDARD B
+                </label>
+
+                <select id="standardB">
+
+                    {% for standard in standards %}
+
+                    <option
+                        value="{{ standard }}"
+                        {% if loop.index == 2 %}selected{% endif %}
+                    >
+                        {{ standard }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="compare-button"
+            onclick="runComparison()"
+        >
+            COMPARE STANDARDS →
+        </button>
+
+    </div>
+
+
+    <!-- COMPARISON AREA -->
+
+    <div
+        id="comparisonArea"
+        class="comparison-area"
+    >
+
+        <div class="comparison-empty">
+
+            <div class="empty-icon">
+                ⇄
+            </div>
+
+            <h2>Select two standards</h2>
+
+            <p>
+                Choose the standards above and click
+                <strong>Compare Standards</strong> to view
+                their technical comparison.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<script>
+
+const standardData = {
+
+    "AIS-003": {
+        title: "Starting Gradeability",
+        category: "Vehicle Performance",
+        type: "Vehicle test / performance",
+        formula: "Starting Gradeability",
+        unit: "%",
+        ev: "No",
+        overview:
+            "Method of measurement and requirements for starting gradeability and extrapolated gradeability."
+    },
+
+    "AIS-004": {
+        title: "Electromagnetic Radiation / Compatibility Requirements",
+        category: "Electromagnetic Compatibility",
+        type: "EMC",
+        formula: "Reference / calculation data",
+        unit: "Various",
+        ev: "No",
+        overview:
+            "Electromagnetic radiation and compatibility requirements for automotive vehicles."
+    },
+
+    "AIS-038": {
+        title: "Electric Power Train Vehicles — Construction and Functional Safety Requirements",
+        category: "Electric Powertrain",
+        type: "Safety",
+        formula: "Traction battery insulation resistance",
+        unit: "Ω / V",
+        ev: "Yes",
+        overview:
+            "Construction and functional safety requirements for electric power train vehicles."
+    },
+
+    "AIS-039": {
+        title: "Electric Power Train Vehicles — Measurement of Electrical Energy Consumption",
+        category: "Electric Powertrain",
+        type: "Energy consumption",
+        formula: "Temperature-corrected battery capacity",
+        unit: "Ah / Wh/km",
+        ev: "Yes",
+        overview:
+            "Measurement of electrical energy consumption and related battery capacity correction."
+    },
+
+    "AIS-040": {
+        title: "Electric Power Train Vehicles — Method of Measuring the Range",
+        category: "Electric Powertrain",
+        type: "Range",
+        formula: "Range calculation",
+        unit: "km",
+        ev: "Yes",
+        overview:
+            "Method for measuring the range of electric power train vehicles."
+    },
+
+    "AIS-041": {
+        title: "Electric Power Train Vehicles — Net Power and Maximum 30 Minute Power",
+        category: "Electric Powertrain",
+        type: "Power measurement",
+        formula: "Power calculation",
+        unit: "kW",
+        ev: "Yes",
+        overview:
+            "Measurement of net power and maximum 30-minute power."
+    },
+
+    "AIS-048": {
+        title: "Battery Capacity & C Rate",
+        category: "Battery",
+        type: "Battery performance",
+        formula: "Battery capacity / C-rate",
+        unit: "Ah / C",
+        ev: "Yes",
+        overview:
+            "Battery capacity and related battery performance calculations."
+    },
+
+    "AIS-049": {
+        title: "Electric Vehicle Requirements",
+        category: "Electric Vehicle",
+        type: "EV requirements",
+        formula: "Reference",
+        unit: "Various",
+        ev: "Yes",
+        overview:
+            "Electric vehicle requirements and associated technical provisions."
+    },
+
+    "AIS-053": {
+        title: "Automotive Standard",
+        category: "Vehicle",
+        type: "Technical requirement",
+        formula: "Reference",
+        unit: "Various",
+        ev: "No",
+        overview:
+            "Automotive technical requirements."
+    },
+
+    "AIS-071": {
+        title: "Automotive Standard",
+        category: "Vehicle",
+        type: "Technical requirement",
+        formula: "Reference",
+        unit: "Various",
+        ev: "No",
+        overview:
+            "Automotive technical requirements."
+    },
+
+    "AIS-137": {
+        title: "Electric Vehicle Standard",
+        category: "Electric Vehicle",
+        type: "EV requirement",
+        formula: "Reference",
+        unit: "Various",
+        ev: "Yes",
+        overview:
+            "Electric vehicle related technical requirements."
+    },
+
+    "AIS-138": {
+        title: "Charging / Body / Leakage Current",
+        category: "Electric Vehicle",
+        type: "Electrical safety",
+        formula: "Current calculations",
+        unit: "A",
+        ev: "Yes",
+        overview:
+            "Charging, body and leakage current related requirements."
+    },
+
+    "AIS-156": {
+        title: "Electric Vehicle Standard",
+        category: "Electric Vehicle",
+        type: "EV requirement",
+        formula: "Reference",
+        unit: "Various",
+        ev: "Yes",
+        overview:
+            "Electric vehicle technical and safety requirements."
+    },
+
+    "AIS-189": {
+        title: "Automotive Standard",
+        category: "Vehicle",
+        type: "Technical requirement",
+        formula: "Reference",
+        unit: "Various",
+        ev: "Yes",
+        overview:
+            "Automotive technical requirements."
+    },
+
+    "AIS-190": {
+        title: "Automotive Standard",
+        category: "Vehicle",
+        type: "Technical requirement",
+        formula: "Reference",
+        unit: "Various",
+        ev: "Yes",
+        overview:
+            "Automotive technical requirements."
+    }
+
+};
+
+
+function runComparison() {
+
+    const standardA =
+        document.getElementById("standardA").value;
+
+    const standardB =
+        document.getElementById("standardB").value;
+
+    const dataA = standardData[standardA];
+    const dataB = standardData[standardB];
+
+    const area =
+        document.getElementById("comparisonArea");
+
+
+    if (standardA === standardB) {
+
+        area.innerHTML = `
+            <div class="comparison-warning">
+
+                <strong>
+                    Please select two different standards.
+                </strong>
+
+                <p>
+                    A comparative study requires two different
+                    AIS standards.
+                </p>
+
+            </div>
+        `;
+
+        return;
+    }
+
+
+    area.innerHTML = `
+
+        <div class="comparison-result">
+
+            <div class="comparison-result-head">
+
+                <div>
+
+                    <span class="section-kicker">
+                        COMPARISON RESULT
+                    </span>
+
+                    <h2>
+                        ${standardA}
+                        <span>vs</span>
+                        ${standardB}
+                    </h2>
+
+                </div>
+
+                <button
+                    class="reset-button"
+                    onclick="resetComparison()"
+                >
+                    RESET
+                </button>
+
+            </div>
+
+
+            <!-- STANDARD HEADERS -->
+
+            <div class="comparison-standard-head">
+
+                <div class="comparison-label">
+                    COMPARISON
+                </div>
+
+                <div class="standard-column">
+
+                    <span class="standard-code">
+                        ${standardA}
+                    </span>
+
+                    <strong>
+                        ${dataA.title}
+                    </strong>
+
+                </div>
+
+                <div class="standard-column">
+
+                    <span class="standard-code">
+                        ${standardB}
+                    </span>
+
+                    <strong>
+                        ${dataB.title}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- OVERVIEW -->
+
+            <div class="comparison-row">
+
+                <div class="row-label">
+                    Overview
+                </div>
+
+                <div>
+                    ${dataA.overview}
+                </div>
+
+                <div>
+                    ${dataB.overview}
+                </div>
+
+            </div>
+
+
+            <!-- CATEGORY -->
+
+            <div class="comparison-row">
+
+                <div class="row-label">
+                    Category
+                </div>
+
+                <div>
+                    ${dataA.category}
+                </div>
+
+                <div>
+                    ${dataB.category}
+                </div>
+
+            </div>
+
+
+            <!-- TYPE -->
+
+            <div class="comparison-row">
+
+                <div class="row-label">
+                    Standard type
+                </div>
+
+                <div>
+                    ${dataA.type}
+                </div>
+
+                <div>
+                    ${dataB.type}
+                </div>
+
+            </div>
+
+
+            <!-- MAIN FORMULA -->
+
+            <div class="comparison-row">
+
+                <div class="row-label">
+                    Main calculation
+                </div>
+
+                <div class="formula-cell">
+                    ${dataA.formula}
+                </div>
+
+                <div class="formula-cell">
+                    ${dataB.formula}
+                </div>
+
+            </div>
+
+
+            <!-- UNIT -->
+
+            <div class="comparison-row">
+
+                <div class="row-label">
+                    Primary unit
+                </div>
+
+                <div>
+                    ${dataA.unit}
+                </div>
+
+                <div>
+                    ${dataB.unit}
+                </div>
+
+            </div>
+
+
+            <!-- EV -->
+
+            <div class="comparison-row">
+
+                <div class="row-label">
+                    EV-related
+                </div>
+
+                <div>
+                    ${dataA.ev}
+                </div>
+
+                <div>
+                    ${dataB.ev}
+                </div>
+
+            </div>
+
+
+            <!-- CALCULATOR -->
+
+            <div class="comparison-row">
+
+                <div class="row-label">
+                    Calculator
+                </div>
+
+                <div>
+                    <a
+                        class="mini-link"
+                        href="/calculator/${standardA.toLowerCase().replace('ais-', 'ais-')}"
+                    >
+                        Open ${standardA} calculator →
+                    </a>
+                </div>
+
+                <div>
+                    <a
+                        class="mini-link"
+                        href="/calculator/${standardB.toLowerCase().replace('ais-', 'ais-')}"
+                    >
+                        Open ${standardB} calculator →
+                    </a>
+                </div>
+
+            </div>
+
+
+            <!-- FUTURE -->
+
+            <div class="comparison-future">
+
+                <div>
+
+                    <span class="section-kicker">
+                        FUTURE DATA LAYER
+                    </span>
+
+                    <h3>
+                        Detailed clause comparison
+                    </h3>
+
+                    <p>
+                        Once the source AIS documents and extracted
+                        requirements are loaded, this section can
+                        compare individual clauses, numerical limits,
+                        test procedures, units, conditions and
+                        amendments between the two standards.
+                    </p>
+
+                </div>
+
+                <span class="data-status">
+                    SOURCE DATA REQUIRED
+                </span>
+
+            </div>
+
+        </div>
+    `;
+}
+
+
+function resetComparison() {
+
+    document.getElementById("comparisonArea").innerHTML = `
+
+        <div class="comparison-empty">
+
+            <div class="empty-icon">
+                ⇄
+            </div>
+
+            <h2>Select two standards</h2>
+
+            <p>
+                Choose the standards above and click
+                <strong>Compare Standards</strong> to view
+                their technical comparison.
+            </p>
+
+        </div>
+
+    `;
+
+}
+
+</script>
+
+{% endblock %}
