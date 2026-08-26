@@ -117,8 +117,8 @@ STANDARDS = {
         ),
 
         "ev_related": True,
-        "formula_available": False,
-        "calculator_available": False,
+        "formula_available": True,
+        "calculator_available": True,
 
         "key_requirements": [
             "Electromagnetic emissions",
@@ -394,8 +394,8 @@ STANDARDS = {
         ),
 
         "ev_related": True,
-        "formula_available": False,
-        "calculator_available": False,
+        "formula_available": True,
+        "calculator_available": True,
 
         "key_requirements": [
             "Range test procedure",
@@ -561,8 +561,8 @@ STANDARDS = {
         ),
 
         "ev_related": True,
-        "formula_available": False,
-        "calculator_available": False,
+        "formula_available": True,
+        "calculator_available": True,
 
         "key_requirements": [
             "Traction battery safety",

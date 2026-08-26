@@ -49,3 +49,51 @@ async function calc138() {
       `Duty cycle: ${f(j.duty_cycle)}\nMaximum current: ${f(j.available_current)} A\nDC body current Ih: ${f(j.body_current)} A\nDC earth leakage current Ig: ${f(j.earth_leakage)} A`;
   } catch (e) { document.getElementById('out138').textContent = e.message; }
 }
+async function calc004() {
+  try {
+    const j = await post('/api/calc/ais004', {
+      vehicle_broadband_10m_f: n('vbb10'),
+      vehicle_broadband_3m_f: n('vbb3'),
+      vehicle_narrowband_10m_f: n('vnb10'),
+      vehicle_narrowband_3m_f: n('vnb3'),
+      subsystem_broadband_30_75_f: n('sbb3075'),
+      subsystem_broadband_75_400_f: n('sbb75400'),
+      subsystem_narrowband_30_75_f: n('snb3075'),
+      subsystem_narrowband_75_400_f: n('snb75400')
+    });
+
+    document.getElementById('out004').textContent =
+      `Vehicle Broadband (10 m): ${f(j.vehicle_broadband_10m)} dBµV/m\n` +
+      `Vehicle Broadband (3 m): ${f(j.vehicle_broadband_3m)} dBµV/m\n` +
+      `Vehicle Narrowband (10 m): ${f(j.vehicle_narrowband_10m)} dBµV/m\n` +
+      `Vehicle Narrowband (3 m): ${f(j.vehicle_narrowband_3m)} dBµV/m\n\n` +
+      `Subsystem Broadband (30–75 MHz): ${f(j.subsystem_broadband_30_75)} dBµV/m\n` +
+      `Subsystem Broadband (75–400 MHz): ${f(j.subsystem_broadband_75_400)} dBµV/m\n` +
+      `Subsystem Narrowband (30–75 MHz): ${f(j.subsystem_narrowband_30_75)} dBµV/m\n` +
+      `Subsystem Narrowband (75–400 MHz): ${f(j.subsystem_narrowband_75_400)} dBµV/m`;
+  } catch (e) {
+    document.getElementById('out004').textContent = e.message;
+  }
+}
+
+async function calc040() {
+  try {
+    const j = await post('/api/calc/ais040', {
+      battery_capacity: n('cap40'),
+      mains_power: n('power40'),
+      covered_distance: n('distance40'),
+      cycle_max_speed: n('cycle40'),
+      vehicle_max_speed: n('vehicle40')
+    });
+
+    document.getElementById('out040').innerHTML =
+      `Maximum charging time: ${f(j.maximum_charging_time)} h (${j.charging_status}) ` +
+      `<b class="${j.charging_time_ok ? 'pass' : 'fail'}">${j.charging_time_ok ? 'PASS (≤ 12 h)' : 'REVIEW'}</b>\n` +
+      `Electric range: ${f(j.electric_range)} km\n` +
+      `85% Cycle max speed: ${f(j.cycle_85)} km/h\n` +
+      `85% Vehicle max speed: ${f(j.vehicle_85)} km/h\n` +
+      `L1 End-of-test speed threshold: ${f(j.l1_threshold)} km/h`;
+  } catch (e) {
+    document.getElementById('out040').textContent = e.message;
+  }
+}

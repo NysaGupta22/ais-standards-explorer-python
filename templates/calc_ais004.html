@@ -1,0 +1,232 @@
+{% extends "base.html" %}
+
+{% block title %}
+AIS-004 — Electromagnetic Radiation Limits | AIS Explorer
+{% endblock %}
+
+{% block content %}
+
+<section class="calc-page">
+
+  <a class="back-link" href="{{ url_for('index') }}#calculators">
+    ← Back to explorer
+  </a>
+
+
+  <div class="calc-page-head">
+
+    <span class="code">AIS-004</span>
+
+    <h1>Electromagnetic Radiation Limits</h1>
+
+    <p>
+      Reference-limit calculations for vehicle electromagnetic
+      radiation and electronic subsystem radiation.
+    </p>
+
+  </div>
+
+
+  <!-- =====================================================
+       VEHICLE
+       ===================================================== -->
+
+  <div class="eq-block">
+
+    <div class="eq-label">
+      Vehicle — Broadband Reference Limits
+    </div>
+
+    <div class="eq">
+      10 m:
+      L = 34 + 15.13 × log₁₀(f / 75)
+    </div>
+
+    <div class="eq">
+      3 m:
+      L = 44 + 15.13 × log₁₀(f / 75)
+    </div>
+
+
+    <div class="eq-label" style="margin-top:20px">
+      Vehicle — Narrowband Reference Limits
+    </div>
+
+    <div class="eq">
+      10 m:
+      L = 24 + 15.13 × log₁₀(f / 75)
+    </div>
+
+    <div class="eq">
+      3 m:
+      L = 34 + 15.13 × log₁₀(f / 75)
+    </div>
+
+  </div>
+
+
+  <div class="calculator">
+
+    <h2>Vehicle Radiation</h2>
+
+    <div class="form-grid">
+
+      <label>
+        Broadband — 10 m frequency
+        <input
+          id="vbb10"
+          value="100"
+          type="number"
+          step="any"
+        >
+      </label>
+
+      <label>
+        Broadband — 3 m frequency
+        <input
+          id="vbb3"
+          value="200"
+          type="number"
+          step="any"
+        >
+      </label>
+
+      <label>
+        Narrowband — 10 m frequency
+        <input
+          id="vnb10"
+          value="100"
+          type="number"
+          step="any"
+        >
+      </label>
+
+      <label>
+        Narrowband — 3 m frequency
+        <input
+          id="vnb3"
+          value="200"
+          type="number"
+          step="any"
+        >
+      </label>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       ELECTRONIC SUBSYSTEM
+       ===================================================== -->
+
+  <div class="eq-block">
+
+    <div class="eq-label">
+      Electronic Subsystem — Broadband
+    </div>
+
+    <div class="eq">
+      30–75 MHz:
+      L = 64 − 25.13 × log₁₀(f / 30)
+    </div>
+
+    <div class="eq">
+      75–400 MHz:
+      L = 54 + 15.13 × log₁₀(f / 75)
+    </div>
+
+
+    <div class="eq-label" style="margin-top:20px">
+      Electronic Subsystem — Narrowband
+    </div>
+
+    <div class="eq">
+      30–75 MHz:
+      L = 54 − 25.13 × log₁₀(f / 30)
+    </div>
+
+    <div class="eq">
+      75–400 MHz:
+      L = 44 + 15.13 × log₁₀(f / 75)
+    </div>
+
+  </div>
+
+
+  <div class="calculator">
+
+    <h2>Electronic Subsystem Radiation</h2>
+
+    <div class="form-grid">
+
+      <label>
+        Broadband — 30–75 MHz
+        <input
+          id="sbb3075"
+          value="68"
+          type="number"
+          step="any"
+        >
+      </label>
+
+      <label>
+        Broadband — 75–400 MHz
+        <input
+          id="sbb75400"
+          value="100"
+          type="number"
+          step="any"
+        >
+      </label>
+
+      <label>
+        Narrowband — 30–75 MHz
+        <input
+          id="snb3075"
+          value="68"
+          type="number"
+          step="any"
+        >
+      </label>
+
+      <label>
+        Narrowband — 75–400 MHz
+        <input
+          id="snb75400"
+          value="100"
+          type="number"
+          step="any"
+        >
+      </label>
+
+    </div>
+
+
+    <button
+      class="calculate"
+      onclick="calc004()"
+    >
+      CALCULATE
+    </button>
+
+
+    <div
+      id="out004"
+      class="result"
+    >
+      Enter values and calculate.
+    </div>
+
+  </div>
+
+</section>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script src="{{ url_for('static', filename='calc.js') }}"></script>
+
+{% endblock %}

@@ -1,0 +1,255 @@
+{% extends "base.html" %}
+
+{% block title %}
+AIS-040 — Electric Range & Charging Time | AIS Explorer
+{% endblock %}
+
+{% block content %}
+
+<section class="calc-page">
+
+  <a class="back-link" href="{{ url_for('index') }}#calculators">
+    ← Back to explorer
+  </a>
+
+
+  <div class="calc-page-head">
+
+    <span class="code">AIS-040</span>
+
+    <h1>Electric Range & Charging Time</h1>
+
+    <p>
+      AIS-040 calculation tools for maximum charging time,
+      electric range and the L1 end-of-test speed threshold.
+    </p>
+
+  </div>
+
+
+  <!-- =====================================================
+       MAXIMUM CHARGING TIME
+       ===================================================== -->
+
+  <div class="eq-block">
+
+    <div class="eq-label">
+      Maximum Charging Time
+    </div>
+
+    <div class="eq">
+      T = 3 × Battery Capacity / Mains Power
+    </div>
+
+    <p style="margin-top:12px">
+      The workbook applies a maximum-time check against
+      the 12-hour criterion.
+    </p>
+
+  </div>
+
+
+  <div class="calculator">
+
+    <h2>Maximum Charging Time</h2>
+
+    <div class="form-grid">
+
+      <label>
+        Battery Capacity (Wh)
+        <input
+          id="cap40"
+          value="50000"
+          type="number"
+          step="any"
+        >
+      </label>
+
+      <label>
+        Mains Power (W)
+        <input
+          id="power40"
+          value="7000"
+          type="number"
+          step="any"
+        >
+      </label>
+
+    </div>
+
+
+    <!-- =====================================================
+         ELECTRIC RANGE
+         ===================================================== -->
+
+    <div class="eq-label" style="margin-top:30px">
+      Electric Range
+    </div>
+
+    <div class="eq">
+      Electric Range = ROUND(Covered Distance, 0)
+    </div>
+
+
+    <label style="display:block;margin-top:18px">
+      Covered Distance (km)
+
+      <input
+        id="distance40"
+        value="100.4"
+        type="number"
+        step="any"
+      >
+    </label>
+
+
+    <!-- =====================================================
+         L1 THRESHOLD
+         ===================================================== -->
+
+    <div class="eq-label" style="margin-top:30px">
+      L1 End-of-Test Speed Threshold
+    </div>
+
+    <div class="eq">
+      Cycle threshold = 0.85 × maximum driving-cycle speed
+    </div>
+
+    <div class="eq">
+      Vehicle threshold = 0.85 × maximum vehicle speed
+    </div>
+
+    <div class="eq">
+      L1 threshold = MIN(cycle threshold, vehicle threshold)
+    </div>
+
+
+    <div class="form-grid" style="margin-top:18px">
+
+      <label>
+        Maximum Driving-Cycle Speed (km/h)
+        <input
+          id="cycle40"
+          value="60"
+          type="number"
+          step="any"
+        >
+      </label>
+
+      <label>
+        Maximum Vehicle Speed (km/h)
+        <input
+          id="vehicle40"
+          value="80"
+          type="number"
+          step="any"
+        >
+      </label>
+
+    </div>
+
+
+    <button
+      class="calculate"
+      onclick="calc040()"
+    >
+      CALCULATE
+    </button>
+
+
+    <div
+      id="out040"
+      class="result"
+    >
+      Enter values and calculate.
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       ACCURACY REFERENCE
+       ===================================================== -->
+
+  <section class="standard-history">
+
+    <div class="section-title">
+
+      <h2>
+        AIS-040 Measurement Accuracy / Resolution Reference
+      </h2>
+
+      <span>REFERENCE</span>
+
+    </div>
+
+
+    <div class="history-grid">
+
+      <div class="history-card">
+
+        <h3>Measurement Parameters</h3>
+
+        <ul>
+
+          <li>
+            <strong>Time:</strong>
+            ±0.1 s accuracy / 0.1 s resolution
+          </li>
+
+          <li>
+            <strong>Distance:</strong>
+            ±0.1% accuracy / 1 m resolution
+          </li>
+
+          <li>
+            <strong>Temperature:</strong>
+            ±1 °C accuracy / 1 °C resolution
+          </li>
+
+          <li>
+            <strong>Speed:</strong>
+            ±1% accuracy / 0.2 km/h resolution
+          </li>
+
+          <li>
+            <strong>Mass:</strong>
+            ±0.5% accuracy / 1 kg resolution
+          </li>
+
+          <li>
+            <strong>Electricity balance:</strong>
+            ±0.5% accuracy / 0.3% resolution
+          </li>
+
+        </ul>
+
+      </div>
+
+
+      <div class="history-card">
+
+        <h3>L1 Reference</h3>
+
+        <p>
+          The L1 end-of-test threshold is calculated as
+          85% of the lower of the maximum driving-cycle
+          speed and maximum vehicle speed.
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</section>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script src="{{ url_for('static', filename='calc.js') }}"></script>
+
+{% endblock %}

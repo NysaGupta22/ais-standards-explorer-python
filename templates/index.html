@@ -9,7 +9,7 @@
     <div><strong>{{ standards|length }}</strong><small>STANDARDS TRACKED</small></div>
     <div><strong>{{ standards|selectattr('ready')|list|length }}</strong><small>FORMULA CALCULATORS</small></div>
     <div><strong>{{ standards|rejectattr('ready')|list|length }}</strong><small>METADATA ONLY</small></div>
-    <div><strong>40%</strong><small>FORMULA COVERAGE</small></div>
+    <div><strong>{{ ((standards|selectattr('ready')|list|length / standards|length) * 100)|round|int }}%</strong><small>FORMULA COVERAGE</small></div>
   </div>
   <div class="notice"><b>Engineering note:</b> outputs are an internal reference implementation based on supplied workbooks/screenshots. Validate against the controlled/current AIS source before certification or regulatory submission.</div>
 </section>
