@@ -11,516 +11,425 @@
   </a>
 
   <div class="compare-head">
-    <span class="eyebrow">ENGINEERING COMPARISON</span>
+    <div>
+      <span class="eyebrow">ENGINEERING COMPARISON &amp; HOMOLOGATION ANALYSIS</span>
+      <h1>Compare AIS Standards</h1>
+      <p>
+        Perform a comprehensive side-by-side engineering comparison between any two Automotive Industry Standards (AIS).
+        Analyze vehicle applicability, scope, key safety requirements, test procedures, regulatory amendments, and complementary synergies.
+      </p>
+    </div>
 
-    <h1>Compare AIS Standards</h1>
-
-    <p>
-      Select two AIS standards to compare their purpose, scope,
-      applicability, revisions, amendments and engineering context.
-      Formula calculations remain on their individual calculator pages.
-    </p>
+    <div class="compare-count">
+      <strong>{{ standards|length }}</strong>
+      <span>STANDARDS AVAILABLE</span>
+    </div>
   </div>
 
+  <!-- ================= QUICK PRESETS ================= -->
+  <div class="comparison-presets-box" style="background:#fff;border:1px solid var(--line);border-radius:8px;padding:16px 20px;margin-bottom:20px;box-shadow:var(--shadow);">
+    <span style="font-size:10px;font-weight:900;color:var(--red);letter-spacing:0.12em;display:block;margin-bottom:10px;">POPULAR ENGINEERING COMPARISONS</span>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;">
+      <button type="button" class="preset-btn" onclick="setComparison('AIS-038', 'AIS-156')" style="background:#f0f4f9;border:1px solid #b7c6d8;padding:7px 14px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;color:var(--blue-dark);">
+        ⚡ AIS-038 vs AIS-156 (4W vs 2W/3W EV Safety)
+      </button>
+      <button type="button" class="preset-btn" onclick="setComparison('AIS-189', 'AIS-190')" style="background:#f0f4f9;border:1px solid #b7c6d8;padding:7px 14px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;color:var(--blue-dark);">
+        🛡️ AIS-189 vs AIS-190 (Cybersecurity vs OTA Updates)
+      </button>
+      <button type="button" class="preset-btn" onclick="setComparison('AIS-039', 'AIS-040')" style="background:#f0f4f9;border:1px solid #b7c6d8;padding:7px 14px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;color:var(--blue-dark);">
+        🔋 AIS-039 vs AIS-040 (Consumption Wh/km vs Range)
+      </button>
+      <button type="button" class="preset-btn" onclick="setComparison('AIS-048', 'AIS-038')" style="background:#f0f4f9;border:1px solid #b7c6d8;padding:7px 14px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;color:var(--blue-dark);">
+        🔥 AIS-048 vs AIS-038 (Battery Abuse vs Vehicle Safety)
+      </button>
+      <button type="button" class="preset-btn" onclick="setComparison('AIS-003', 'AIS-041')" style="background:#f0f4f9;border:1px solid #b7c6d8;padding:7px 14px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;color:var(--blue-dark);">
+        🏔️ AIS-003 vs AIS-041 (Starting Gradeability vs Motor Power)
+      </button>
+      <button type="button" class="preset-btn" onclick="setComparison('AIS-138', 'AIS-038')" style="background:#f0f4f9;border:1px solid #b7c6d8;padding:7px 14px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;color:var(--blue-dark);">
+        🔌 AIS-138 vs AIS-038 (Charging Stations vs EV Safety)
+      </button>
+    </div>
+  </div>
 
   <!-- ================= SELECTORS ================= -->
-
   <div class="compare-selector">
 
-    <div class="compare-select-card">
-
+    <div class="selector-box">
       <label for="standardA">
-        STANDARD A
+        STANDARD A (PRIMARY)
       </label>
 
-      <select id="standardA">
-
+      <select id="standardA" onchange="compareStandards()">
         {% for code, standard in standards.items() %}
-
         <option value="{{ code }}">
           {{ code }} — {{ standard.title }}
         </option>
-
         {% endfor %}
-
       </select>
-
     </div>
-
 
     <div class="compare-vs">
       VS
     </div>
 
-
-    <div class="compare-select-card">
-
+    <div class="selector-box">
       <label for="standardB">
-        STANDARD B
+        STANDARD B (COMPARATIVE)
       </label>
 
-      <select id="standardB">
-
+      <select id="standardB" onchange="compareStandards()">
         {% for code, standard in standards.items() %}
-
-        <option value="{{ code }}"
-          {% if loop.index == 2 %}selected{% endif %}>
+        <option value="{{ code }}" {% if loop.index == 3 %}selected{% endif %}>
           {{ code }} — {{ standard.title }}
         </option>
-
         {% endfor %}
-
       </select>
-
     </div>
 
   </div>
 
+  <div style="display:flex;justify-content:center;margin-bottom:28px;">
+    <button
+      class="compare-button calculate"
+      type="button"
+      onclick="compareStandards()"
+      style="font-size:13px;padding:12px 32px;font-weight:900;letter-spacing:0.08em;"
+    >
+      COMPARE STANDARDS
+    </button>
+  </div>
 
-  <button
-    class="compare-button"
-    type="button"
-    onclick="compareStandards()"
-  >
-    COMPARE STANDARDS
-  </button>
-
-
-  <!-- ================= COMPARISON ================= -->
-
+  <!-- ================= COMPARISON RESULTS ================= -->
   <div id="comparisonResult" class="comparison-result">
-
     <div class="comparison-placeholder">
-
       <span>SELECT TWO STANDARDS</span>
-
-      <h2>Ready for comparison</h2>
-
+      <h2>Ready for comparative study</h2>
       <p>
-        Select two standards above and click
-        <strong>COMPARE STANDARDS</strong>.
+        Select two standards above or pick a preset to view the full engineering analysis.
       </p>
-
     </div>
-
   </div>
 
 </section>
 
-
 <script>
-
 const standardsData = {{ standards | tojson }};
 
+function setComparison(codeA, codeB) {
+  const selA = document.getElementById('standardA');
+  const selB = document.getElementById('standardB');
+  if (selA && selB) {
+    selA.value = codeA;
+    selB.value = codeB;
+    compareStandards();
+  }
+}
 
 function compareStandards() {
-
-  const codeA = document.getElementById("standardA").value;
-  const codeB = document.getElementById("standardB").value;
+  const codeA = document.getElementById('standardA').value;
+  const codeB = document.getElementById('standardB').value;
 
   const a = standardsData[codeA];
   const b = standardsData[codeB];
+  const result = document.getElementById('comparisonResult');
 
-  const result = document.getElementById("comparisonResult");
-
-
-  if (!a || !b) {
-    return;
-  }
-
+  if (!a || !b) return;
 
   if (codeA === codeB) {
-
     result.innerHTML = `
-      <div class="comparison-warning">
-        Please select two different standards to compare.
+      <div style="background:#fff3f3;border:1px solid #ffb3b3;border-left:4px solid var(--red);padding:20px;border-radius:6px;color:var(--red);font-weight:700;">
+        ⚠️ Please select two different standards to perform a comparative study.
       </div>
     `;
-
     return;
   }
 
+  const studyA = a.comparative_study || {};
+  const studyB = b.comparative_study || {};
 
-  const amendmentsA = a.amendments.length
-    ? a.amendments.map(item => `<li>${item}</li>`).join("")
-    : "<li>No amendment information currently entered.</li>";
+  const amendmentsA = (a.amendments && a.amendments.length)
+    ? a.amendments.map(item => `<li>${item}</li>`).join('')
+    : '<li>No specific amendments published.</li>';
 
+  const amendmentsB = (b.amendments && b.amendments.length)
+    ? b.amendments.map(item => `<li>${item}</li>`).join('')
+    : '<li>No specific amendments published.</li>';
 
-  const amendmentsB = b.amendments.length
-    ? b.amendments.map(item => `<li>${item}</li>`).join("")
-    : "<li>No amendment information currently entered.</li>";
+  const revisionsA = (a.revision_history && a.revision_history.length)
+    ? a.revision_history.map(item => `<li>${item}</li>`).join('')
+    : '<li>Initial revision.</li>';
 
+  const revisionsB = (b.revision_history && b.revision_history.length)
+    ? b.revision_history.map(item => `<li>${item}</li>`).join('')
+    : '<li>Initial revision.</li>';
 
-  const revisionsA = a.revision_history.length
-    ? a.revision_history.map(item => `<li>${item}</li>`).join("")
-    : "<li>No revision information currently entered.</li>";
+  const reqA = (a.key_requirements && a.key_requirements.length)
+    ? a.key_requirements.map(item => `<li>${item}</li>`).join('')
+    : '<li>Refer to official AIS publication.</li>';
 
+  const reqB = (b.key_requirements && b.key_requirements.length)
+    ? b.key_requirements.map(item => `<li>${item}</li>`).join('')
+    : '<li>Refer to official AIS publication.</li>';
 
-  const revisionsB = b.revision_history.length
-    ? b.revision_history.map(item => `<li>${item}</li>`).join("")
-    : "<li>No revision information currently entered.</li>";
+  const testA = (a.test_focus && a.test_focus.length)
+    ? a.test_focus.map(item => `<li>${item}</li>`).join('')
+    : '<li>Standard laboratory procedures.</li>';
 
+  const testB = (b.test_focus && b.test_focus.length)
+    ? b.test_focus.map(item => `<li>${item}</li>`).join('')
+    : '<li>Standard laboratory procedures.</li>';
 
-  const relatedA = a.related_standards.length
-    ? a.related_standards.map(item => `<span>${item}</span>`).join("")
-    : "<span>None currently listed</span>";
+  const relatedA = (a.related_standards && a.related_standards.length)
+    ? a.related_standards.map(item => `<a href="/standards/${item}" class="related-standard" style="margin-right:6px;margin-bottom:6px;display:inline-block;">${item}</a>`).join('')
+    : '<span>None listed</span>';
 
+  const relatedB = (b.related_standards && b.related_standards.length)
+    ? b.related_standards.map(item => `<a href="/standards/${item}" class="related-standard" style="margin-right:6px;margin-bottom:6px;display:inline-block;">${item}</a>`).join('')
+    : '<span>None listed</span>';
 
-  const relatedB = b.related_standards.length
-    ? b.related_standards.map(item => `<span>${item}</span>`).join("")
-    : "<span>None currently listed</span>";
+  const calcBtnA = a.calculator_available
+    ? `<a class="btn-link" href="/calculator/${a.code.toLowerCase()}" style="background:#14834b;">OPEN ${a.code} CALCULATOR ⚡</a>`
+    : '';
 
+  const calcBtnB = b.calculator_available
+    ? `<a class="btn-link" href="/calculator/${b.code.toLowerCase()}" style="background:#14834b;">OPEN ${b.code} CALCULATOR ⚡</a>`
+    : '';
 
   result.innerHTML = `
+    <!-- HEADER CARDS -->
+    <div class="comparison-grid" style="margin-bottom:24px;">
+      <article class="comparison-card" style="border-top:4px solid var(--blue);">
+        <div class="comparison-card-head">
+          <span class="comparison-code" style="color:var(--blue);">${a.code}</span>
+          <span class="tag ${a.calculator_available ? 'ready' : ''}">${a.calculator_available ? 'FORMULA CALCULATOR' : 'METADATA'}</span>
+        </div>
+        <h2>${a.title}</h2>
+        <p>${a.overview}</p>
+        <div class="comparison-details">
+          <div><span>CATEGORY</span><strong>${a.category}</strong></div>
+          <div><span>VEHICLE TYPE</span><strong>${a.vehicle_type}</strong></div>
+          <div><span>EV FOCUS</span><strong>${a.ev_related ? '⚡ YES' : 'NO'}</strong></div>
+          <div><span>SOURCE</span><strong>${a.source || 'ARAI Publication'}</strong></div>
+        </div>
+      </article>
 
-    <!-- STANDARD HEADERS -->
-
-    <div class="comparison-header">
-
-      <div class="comparison-standard">
-
-        <span class="comparison-code">
-          ${a.code}
-        </span>
-
-        <h2>
-          ${a.title}
-        </h2>
-
-      </div>
-
-
-      <div class="comparison-standard">
-
-        <span class="comparison-code">
-          ${b.code}
-        </span>
-
-        <h2>
-          ${b.title}
-        </h2>
-
-      </div>
-
+      <article class="comparison-card" style="border-top:4px solid var(--red);">
+        <div class="comparison-card-head">
+          <span class="comparison-code" style="color:var(--red);">${b.code}</span>
+          <span class="tag ${b.calculator_available ? 'ready' : ''}">${b.calculator_available ? 'FORMULA CALCULATOR' : 'METADATA'}</span>
+        </div>
+        <h2>${b.title}</h2>
+        <p>${b.overview}</p>
+        <div class="comparison-details">
+          <div><span>CATEGORY</span><strong>${b.category}</strong></div>
+          <div><span>VEHICLE TYPE</span><strong>${b.vehicle_type}</strong></div>
+          <div><span>EV FOCUS</span><strong>${b.ev_related ? '⚡ YES' : 'NO'}</strong></div>
+          <div><span>SOURCE</span><strong>${b.source || 'ARAI Publication'}</strong></div>
+        </div>
+      </article>
     </div>
 
+    <!-- COMPARATIVE STUDY EXECUTIVE SUMMARY -->
+    <div style="background:#fff;border:1px solid var(--line);border-left:5px solid var(--blue-dark);border-radius:8px;padding:24px;margin-bottom:28px;box-shadow:var(--shadow);">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+        <span style="background:var(--blue-dark);color:#fff;font-size:10px;font-weight:900;padding:3px 8px;border-radius:3px;">EXECUTIVE COMPARISON</span>
+        <h3 style="margin:0;color:var(--blue-dark);font-size:18px;">Comparative Study: ${a.code} vs ${b.code}</h3>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:16px;">
+        <div style="background:#f7f9fc;padding:14px;border-radius:6px;">
+          <strong style="color:var(--blue);display:block;font-size:12px;margin-bottom:4px;">${a.code} — Primary Role:</strong>
+          <span style="font-size:13px;color:var(--ink);">${studyA.primary_role || a.purpose}</span>
+        </div>
+        <div style="background:#fdf7f7;padding:14px;border-radius:6px;">
+          <strong style="color:var(--red);display:block;font-size:12px;margin-bottom:4px;">${b.code} — Primary Role:</strong>
+          <span style="font-size:13px;color:var(--ink);">${studyB.primary_role || b.purpose}</span>
+        </div>
+      </div>
+      <div style="background:#f0f4f9;border-left:3px solid var(--blue);padding:14px 18px;border-radius:4px;">
+        <strong style="font-size:11px;color:var(--blue-dark);letter-spacing:0.06em;display:block;margin-bottom:6px;">ENGINEERING SYNTHESIS &amp; REGULATORY INTERACTION:</strong>
+        <p style="margin:0;font-size:13px;line-height:1.7;color:var(--ink);">
+          ${studyA.comparison_note || (a.code + ' and ' + b.code + ' address complementary aspects of vehicle type approval, where ' + a.code + ' focuses on ' + a.category.toLowerCase() + ' and ' + b.code + ' regulates ' + b.category.toLowerCase() + '.')}
+        </p>
+      </div>
+    </div>
 
-    <!-- OVERVIEW -->
-
-    <div class="comparison-section">
-
+    <!-- SIDE BY SIDE SPECIFICATION MATRIX -->
+    <div class="comparison-section" style="margin-bottom:28px;">
       <div class="comparison-section-title">
         <span>01</span>
-        <h3>Overview</h3>
+        <h3>Specification &amp; Compliance Matrix</h3>
       </div>
 
-
-      <div class="comparison-columns">
-
-        <div>
-          <p>${a.overview}</p>
+      <div class="comparison-table" style="background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden;box-shadow:var(--shadow);">
+        <div class="comparison-row" style="background:#f0f4f9;font-weight:900;color:var(--blue-dark);">
+          <div class="comparison-label">PARAMETER</div>
+          <div>${a.code}</div>
+          <div>${b.code}</div>
         </div>
 
-        <div>
-          <p>${b.overview}</p>
+        <div class="comparison-row">
+          <div class="comparison-label">Engineering Domain</div>
+          <div style="font-weight:700;color:var(--blue);">${studyA.engineering_domain || a.category}</div>
+          <div style="font-weight:700;color:var(--red);">${studyB.engineering_domain || b.category}</div>
         </div>
 
+        <div class="comparison-row">
+          <div class="comparison-label">Vehicle Categories</div>
+          <div>${a.vehicle_type}</div>
+          <div>${b.vehicle_type}</div>
+        </div>
+
+        <div class="comparison-row">
+          <div class="comparison-label">Primary Output / Target</div>
+          <div>${studyA.main_output || a.purpose}</div>
+          <div>${studyB.main_output || b.purpose}</div>
+        </div>
+
+        <div class="comparison-row">
+          <div class="comparison-label">Compliance Criteria</div>
+          <div>${studyA.compliance_criteria || 'Compliance with applicable clauses'}</div>
+          <div>${studyB.compliance_criteria || 'Compliance with applicable clauses'}</div>
+        </div>
+
+        <div class="comparison-row">
+          <div class="comparison-label">Test Methodology</div>
+          <div>${studyA.test_methodology || 'Standard laboratory physical and electrical test'}</div>
+          <div>${studyB.test_methodology || 'Standard laboratory physical and electrical test'}</div>
+        </div>
+
+        <div class="comparison-row">
+          <div class="comparison-label">Interactive Calculator</div>
+          <div>${a.calculator_available ? '<b class="pass">AVAILABLE (Active LIVE Calc)</b>' : '<span style="color:var(--muted);">Reference / Metadata Only</span>'}</div>
+          <div>${b.calculator_available ? '<b class="pass">AVAILABLE (Active LIVE Calc)</b>' : '<span style="color:var(--muted);">Reference / Metadata Only</span>'}</div>
+        </div>
       </div>
-
     </div>
 
-
-    <!-- PURPOSE -->
-
-    <div class="comparison-section">
-
+    <!-- SCOPE & APPLICABILITY -->
+    <div class="comparison-section" style="margin-bottom:28px;">
       <div class="comparison-section-title">
         <span>02</span>
-        <h3>Purpose</h3>
+        <h3>Scope &amp; Vehicle Applicability</h3>
       </div>
-
-
       <div class="comparison-columns">
-
-        <div>
-          <p>${a.purpose}</p>
+        <div style="background:#fff;border:1px solid var(--line);border-radius:8px;padding:20px;box-shadow:var(--shadow);">
+          <strong style="color:var(--blue);display:block;margin-bottom:8px;">${a.code} Scope:</strong>
+          <p style="margin:0;font-size:13px;line-height:1.7;color:var(--muted);">${a.scope}</p>
         </div>
-
-        <div>
-          <p>${b.purpose}</p>
+        <div style="background:#fff;border:1px solid var(--line);border-radius:8px;padding:20px;box-shadow:var(--shadow);">
+          <strong style="color:var(--red);display:block;margin-bottom:8px;">${b.code} Scope:</strong>
+          <p style="margin:0;font-size:13px;line-height:1.7;color:var(--muted);">${b.scope}</p>
         </div>
-
       </div>
-
     </div>
 
-
-    <!-- SCOPE -->
-
-    <div class="comparison-section">
-
+    <!-- KEY REQUIREMENTS -->
+    <div class="comparison-section" style="margin-bottom:28px;">
       <div class="comparison-section-title">
         <span>03</span>
-        <h3>Scope</h3>
+        <h3>Key Regulatory Requirements</h3>
       </div>
-
-
       <div class="comparison-columns">
-
-        <div>
-          <p>${a.scope}</p>
+        <div class="comparison-list" style="background:#fff;border:1px solid var(--line);border-radius:8px;padding:20px;box-shadow:var(--shadow);">
+          <strong style="color:var(--blue);display:block;margin-bottom:12px;">${a.code} Mandatory Requirements:</strong>
+          <ul style="margin:0;padding-left:18px;line-height:1.8;font-size:13px;color:var(--ink);">
+            ${reqA}
+          </ul>
         </div>
-
-        <div>
-          <p>${b.scope}</p>
+        <div class="comparison-list" style="background:#fff;border:1px solid var(--line);border-radius:8px;padding:20px;box-shadow:var(--shadow);">
+          <strong style="color:var(--red);display:block;margin-bottom:12px;">${b.code} Mandatory Requirements:</strong>
+          <ul style="margin:0;padding-left:18px;line-height:1.8;font-size:13px;color:var(--ink);">
+            ${reqB}
+          </ul>
         </div>
-
       </div>
-
     </div>
 
-
-    <!-- KEY INFORMATION -->
-
-    <div class="comparison-section">
-
+    <!-- TEST FOCUS -->
+    <div class="comparison-section" style="margin-bottom:28px;">
       <div class="comparison-section-title">
         <span>04</span>
-        <h3>Key Information</h3>
+        <h3>Testing Focus &amp; Verification Procedures</h3>
       </div>
-
-
-      <div class="comparison-table">
-
-        <div class="comparison-row">
-
-          <div class="comparison-label">
-            Category
-          </div>
-
-          <div>
-            ${a.category}
-          </div>
-
-          <div>
-            ${b.category}
-          </div>
-
+      <div class="comparison-columns">
+        <div class="comparison-list" style="background:#fff;border:1px solid var(--line);border-radius:8px;padding:20px;box-shadow:var(--shadow);">
+          <strong style="color:var(--blue);display:block;margin-bottom:12px;">${a.code} Laboratory Test Focus:</strong>
+          <ul style="margin:0;padding-left:18px;line-height:1.8;font-size:13px;color:var(--ink);">
+            ${testA}
+          </ul>
         </div>
-
-
-        <div class="comparison-row">
-
-          <div class="comparison-label">
-            Vehicle / System
-          </div>
-
-          <div>
-            ${a.vehicle_type}
-          </div>
-
-          <div>
-            ${b.vehicle_type}
-          </div>
-
+        <div class="comparison-list" style="background:#fff;border:1px solid var(--line);border-radius:8px;padding:20px;box-shadow:var(--shadow);">
+          <strong style="color:var(--red);display:block;margin-bottom:12px;">${b.code} Laboratory Test Focus:</strong>
+          <ul style="margin:0;padding-left:18px;line-height:1.8;font-size:13px;color:var(--ink);">
+            ${testB}
+          </ul>
         </div>
-
-
-        <div class="comparison-row">
-
-          <div class="comparison-label">
-            EV Related
-          </div>
-
-          <div>
-            ${a.ev_related ? "YES" : "NO"}
-          </div>
-
-          <div>
-            ${b.ev_related ? "YES" : "NO"}
-          </div>
-
-        </div>
-
-
-        <div class="comparison-row">
-
-          <div class="comparison-label">
-            Formula / Calculator
-          </div>
-
-          <div>
-            ${a.formula_available ? "AVAILABLE" : "REFERENCE ONLY"}
-          </div>
-
-          <div>
-            ${b.formula_available ? "AVAILABLE" : "REFERENCE ONLY"}
-          </div>
-
-        </div>
-
       </div>
-
     </div>
 
-
-    <!-- REVISIONS -->
-
-    <div class="comparison-section">
-
+    <!-- REVISIONS & AMENDMENTS -->
+    <div class="comparison-section" style="margin-bottom:28px;">
       <div class="comparison-section-title">
         <span>05</span>
-        <h3>Revision History</h3>
+        <h3>Revisions &amp; Amendment Records</h3>
       </div>
-
-
       <div class="comparison-columns">
-
-        <div class="comparison-list">
-
-          <ul>
+        <div class="comparison-list" style="background:#fff;border:1px solid var(--line);border-radius:8px;padding:20px;box-shadow:var(--shadow);">
+          <strong style="color:var(--blue);display:block;margin-bottom:8px;">${a.code} Revision History:</strong>
+          <ul style="margin:0 0 12px;padding-left:18px;line-height:1.7;font-size:12px;color:var(--ink);">
             ${revisionsA}
           </ul>
-
-        </div>
-
-
-        <div class="comparison-list">
-
-          <ul>
-            ${revisionsB}
-          </ul>
-
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <!-- AMENDMENTS -->
-
-    <div class="comparison-section">
-
-      <div class="comparison-section-title">
-        <span>06</span>
-        <h3>Amendments / Corrigenda</h3>
-      </div>
-
-
-      <div class="comparison-columns">
-
-        <div class="comparison-list">
-
-          <ul>
+          <strong style="color:var(--blue);display:block;margin-bottom:6px;font-size:11px;">Amendments:</strong>
+          <ul style="margin:0;padding-left:18px;line-height:1.7;font-size:12px;color:var(--muted);">
             ${amendmentsA}
           </ul>
-
         </div>
 
-
-        <div class="comparison-list">
-
-          <ul>
+        <div class="comparison-list" style="background:#fff;border:1px solid var(--line);border-radius:8px;padding:20px;box-shadow:var(--shadow);">
+          <strong style="color:var(--red);display:block;margin-bottom:8px;">${b.code} Revision History:</strong>
+          <ul style="margin:0 0 12px;padding-left:18px;line-height:1.7;font-size:12px;color:var(--ink);">
+            ${revisionsB}
+          </ul>
+          <strong style="color:var(--red);display:block;margin-bottom:6px;font-size:11px;">Amendments:</strong>
+          <ul style="margin:0;padding-left:18px;line-height:1.7;font-size:12px;color:var(--muted);">
             ${amendmentsB}
           </ul>
-
         </div>
-
       </div>
-
     </div>
-
 
     <!-- RELATED STANDARDS -->
-
-    <div class="comparison-section">
-
+    <div class="comparison-section" style="margin-bottom:28px;">
       <div class="comparison-section-title">
-        <span>07</span>
-        <h3>Related Standards</h3>
+        <span>06</span>
+        <h3>Related AIS Ecosystem Standards</h3>
       </div>
-
-
       <div class="comparison-columns">
-
-        <div class="related-comparison">
-          ${relatedA}
+        <div style="background:#fff;border:1px solid var(--line);border-radius:8px;padding:20px;box-shadow:var(--shadow);">
+          <strong style="color:var(--blue);display:block;margin-bottom:10px;">${a.code} Related Standards:</strong>
+          <div class="related-list">${relatedA}</div>
         </div>
-
-        <div class="related-comparison">
-          ${relatedB}
+        <div style="background:#fff;border:1px solid var(--line);border-radius:8px;padding:20px;box-shadow:var(--shadow);">
+          <strong style="color:var(--red);display:block;margin-bottom:10px;">${b.code} Related Standards:</strong>
+          <div class="related-list">${relatedB}</div>
         </div>
-
       </div>
-
     </div>
 
-
-    <!-- ENGINEERING INTERPRETATION -->
-
-    <div class="comparison-section comparison-conclusion">
-
-      <div class="comparison-section-title">
-        <span>08</span>
-        <h3>Engineering Context</h3>
-      </div>
-
-
-      <div class="comparison-columns">
-
-        <div>
-
-          <strong>${a.code}</strong>
-
-          <p>
-            ${a.code} is primarily concerned with
-            ${a.category.toLowerCase()}.
-          </p>
-
-        </div>
-
-
-        <div>
-
-          <strong>${b.code}</strong>
-
-          <p>
-            ${b.code} is primarily concerned with
-            ${b.category.toLowerCase()}.
-          </p>
-
-        </div>
-
-      </div>
-
+    <!-- ACTION BUTTONS -->
+    <div class="comparison-actions" style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:30px;">
+      <a class="btn-link" href="/standards/${a.code}">VIEW ${a.code} DETAILS →</a>
+      <a class="btn-link" href="/standards/${b.code}">VIEW ${b.code} DETAILS →</a>
+      ${calcBtnA}
+      ${calcBtnB}
     </div>
-
-
-    <!-- ACTIONS -->
-
-    <div class="comparison-actions">
-
-      <a
-        class="btn-link"
-        href="/standards/${a.code}"
-      >
-        VIEW ${a.code}
-      </a>
-
-      <a
-        class="btn-link"
-        href="/standards/${b.code}"
-      >
-        VIEW ${b.code}
-      </a>
-
-    </div>
-
   `;
-
 }
 
+// Auto-run comparison on initial load
+document.addEventListener('DOMContentLoaded', () => {
+  compareStandards();
+});
 </script>
 
 {% endblock %}

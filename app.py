@@ -79,7 +79,10 @@ def index():
             "title": standard["title"],
             "ready": standard.get("calculator_available", False),
             "ev": standard.get("ev_related", False),
-            "formulas": [],
+            "category": standard.get("category", ""),
+            "vehicle_type": standard.get("vehicle_type", ""),
+            "overview": standard.get("overview", ""),
+            "formulas": [standard.get("category", "")] if standard.get("category") else [],
             "source": standard.get("source", ""),
         })
 
