@@ -4,9 +4,16 @@ async function post(url, data) {
   if (!r.ok) throw Error(j.error || 'Calculation error');
   return j;
 }
-function n(id) { return Number(document.getElementById(id).value); }
-function f(x) { return Number(x).toLocaleString(undefined, { maximumFractionDigits: 3 }); }
+function n(id) {
+  const el = document.getElementById(id);
+  return el ? Number(el.value) : 0;
+}
+function f(x) {
+  if (x === null || x === undefined || isNaN(x)) return '—';
+  return Number(x).toLocaleString(undefined, { minimumFractionDigits: 3, maximumFractionDigits: 3 });
+}
 
+// AIS-003
 async function calc003() {
   try {
     const j = await post('/api/calc/ais003', {
@@ -18,6 +25,7 @@ async function calc003() {
   } catch (e) { document.getElementById('out003').textContent = e.message; }
 }
 
+// AIS-038
 async function calc038() {
   try {
     const j = await post('/api/calc/ais038', { u: n('u38'), v1: n('v138'), vp: n('vp38'), v2: n('v238') });
@@ -26,6 +34,7 @@ async function calc038() {
   } catch (e) { document.getElementById('out038').textContent = e.message; }
 }
 
+// AIS-039
 async function calc039() {
   try {
     const j = await post('/api/calc/ais039', { ct: n('ct39'), t: n('t39'), r: n('r39'), energy: n('e39'), distance: n('d39'), declared: n('m39') });
@@ -34,6 +43,7 @@ async function calc039() {
   } catch (e) { document.getElementById('out039').textContent = e.message; }
 }
 
+// AIS-048
 async function calc048() {
   try {
     const j = await post('/api/calc/ais048', { capacity: n('cap48'), crate: n('crate48') });
@@ -42,13 +52,7 @@ async function calc048() {
   } catch (e) { document.getElementById('out048').textContent = e.message; }
 }
 
-async function calc138() {
-  try {
-    const j = await post('/api/calc/ais138', { current: n('i138'), range: document.getElementById('range138').value, vdc: n('vdc138'), r: n('rg138'), rf: n('rf138') });
-    document.getElementById('out138').textContent =
-      `Duty cycle: ${f(j.duty_cycle)}\nMaximum current: ${f(j.available_current)} A\nDC body current Ih: ${f(j.body_current)} A\nDC earth leakage current Ig: ${f(j.earth_leakage)} A`;
-  } catch (e) { document.getElementById('out138').textContent = e.message; }
-}
+// AIS-004
 async function calc004() {
   try {
     const j = await post('/api/calc/ais004', {
@@ -76,6 +80,7 @@ async function calc004() {
   }
 }
 
+// AIS-040
 async function calc040() {
   try {
     const j = await post('/api/calc/ais040', {
@@ -96,4 +101,71 @@ async function calc040() {
   } catch (e) {
     document.getElementById('out040').textContent = e.message;
   }
+}
+
+// =========================================================
+// AIS-138 DEDICATED SEPARATED CALCULATIONS
+// =========================================================
+
+// Card 1: AC Charging 6A–51A Range
+function calc138_ac_low() {
+  const current = n('ac_low_i');
+  if (current <= 0) {
+    if (document.getElementById('out_ac_low_duty')) document.getElementById('out_ac_low_duty').textContent = '—';
+    if (document.getElementById('out_ac_low_current')) document.getElementById('out_ac_low_current').textContent = '—';
+    return;
+  }
+  const duty = current / 0.6;
+  const maxCurrent = duty * 0.6;
+
+  const dutyEl = document.getElementById('out_ac_low_duty');
+  const currEl = document.getElementById('out_ac_low_current');
+  if (dutyEl) dutyEl.textContent = `${f(duty)} %`;
+  if (currEl) currEl.textContent = `${f(maxCurrent)} A`;
+}
+
+// Card 2: AC Charging 51A–80A Range
+function calc138_ac_high() {
+  const current = n('ac_high_i');
+  if (current <= 0) {
+    if (document.getElementById('out_ac_high_duty')) document.getElementById('out_ac_high_duty').textContent = '—';
+    if (document.getElementById('out_ac_high_current')) document.getElementById('out_ac_high_current').textContent = '—';
+    return;
+  }
+  const duty = (current / 2.5) + 64;
+  const maxCurrent = (duty - 64) * 2.5;
+
+  const dutyEl = document.getElementById('out_ac_high_duty');
+  const currEl = document.getElementById('out_ac_high_current');
+  if (dutyEl) dutyEl.textContent = `${f(duty)} %`;
+  if (currEl) currEl.textContent = `${f(maxCurrent)} A`;
+}
+
+// Card 3: DC Charging Body & Earth Leakage Current
+function calc138_dc() {
+  const vdc = n('dc_vdc');
+  const r = n('dc_r');
+  const rf = n('dc_rf');
+
+  const bodyEl = document.getElementById('out_dc_body');
+  const leakEl = document.getElementById('out_dc_leakage');
+
+  if (r <= 0 || rf <= 0) {
+    if (bodyEl) bodyEl.textContent = '—';
+    if (leakEl) leakEl.textContent = '—';
+    return;
+  }
+
+  const body = vdc * (r + rf) / (r * rf);
+  const leakage = vdc / (r + 2 * rf);
+
+  if (bodyEl) bodyEl.textContent = `${f(body)} A`;
+  if (leakEl) leakEl.textContent = `${f(leakage)} A`;
+}
+
+// Unified fallback for AIS-138
+async function calc138() {
+  calc138_ac_low();
+  calc138_ac_high();
+  calc138_dc();
 }

@@ -571,54 +571,35 @@ def ais048():
 @app.route("/api/calc/ais138", methods=["POST"])
 def ais138():
 
-    d = request.get_json()
+    d = request.get_json() or {}
 
-    current = float(
-        d["current"]
-    )
+    try:
+        current = float(d.get("current", 10))
+        low = (d.get("range", "low") == "low")
 
-    low = (
-        d.get("range", "low") == "low"
-    )
+        if low:
+            duty = current / 0.6
+            available = duty * 0.6
+        else:
+            duty = (current / 2.5) + 64
+            available = (duty - 64) * 2.5
 
-    if low:
-        duty = current / 0.6
-        available = duty * 0.6
+        vdc = float(d.get("vdc", 400))
+        r = float(d.get("r", 100))
+        rf = float(d.get("rf", 200))
 
-    else:
-        duty = current / 2.5 + 64
-        available = (
-            duty - 64
-        ) * 2.5
+        body = (vdc * (r + rf) / (r * rf)) if (r * rf) != 0 else 0
+        leakage = (vdc / (r + 2 * rf)) if (r + 2 * rf) != 0 else 0
 
-    vdc, r, rf = map(
-        float,
-        (
-            d["vdc"],
-            d["r"],
-            d["rf"],
-        ),
-    )
+        return jsonify({
+            "duty_cycle": duty,
+            "available_current": available,
+            "body_current": body,
+            "earth_leakage": leakage,
+        })
 
-    body = (
-        vdc * (r + rf)
-        / (r * rf)
-    )
-
-    leakage = (
-        vdc / (r + 2 * rf)
-    )
-
-    return jsonify({
-
-        "duty_cycle": duty,
-
-        "available_current": available,
-
-        "body_current": body,
-
-        "earth_leakage": leakage,
-    })
+    except (ValueError, TypeError, KeyError) as e:
+        return jsonify({"error": f"Invalid input parameter: {str(e)}"}), 400
 
 
 # ============================================================

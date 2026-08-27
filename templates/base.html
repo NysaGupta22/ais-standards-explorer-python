@@ -3,20 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{% block title %}AIS Standards Explorer | JSW Powertrain{% endblock %}</title>
+<title>{% block title %}Engineering Design Principles — Rule Book and Work Guidelines | JSW Group{% endblock %}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=STIX+Two+Text:ital@0;1&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 <header class="top">
   <div class="brand">
-    <div class="brand-mark">JSW</div>
-    <div>
-      <div class="brand-title">AIS EXPLORER</div>
-      <div class="brand-sub">POWERTRAIN DEPARTMENT</div>
-    </div>
+    <a href="{{ url_for('index') }}" style="display:flex;align-items:center;text-decoration:none;gap:14px;">
+      <img src="{{ url_for('static', filename='jsw-logo.png') }}" alt="JSW Group" class="brand-logo" style="height:44px;width:auto;object-fit:contain;">
+      <div style="border-left:2px solid var(--line);padding-left:14px;">
+        <div class="brand-title">AIS EXPLORER</div>
+        <div class="brand-sub">ENGINEERING DESIGN PRINCIPLES</div>
+      </div>
+    </a>
   </div>
   <div class="top-status"><span></span> INTERNAL ENGINEERING TOOL</div>
 </header>
@@ -40,7 +42,66 @@
   </main>
 </div>
 
-<footer>JSW Powertrain — AIS Standards Explorer · Internal engineering reference · Red / blue / white UI</footer>
+<!-- ================= MULTI-COLUMN FOOTER ================= -->
+<footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-grid">
+      <!-- Col 1: JSW Group Info -->
+      <div class="footer-col footer-brand-col">
+        <img src="{{ url_for('static', filename='jsw-logo.png') }}" alt="JSW Group Logo" style="height:40px;margin-bottom:12px;object-fit:contain;background:#fff;padding:4px 8px;border-radius:4px;">
+        <h3>JSW Powertrain Department</h3>
+        <p>Engineering Design Principles — Rule Book and Work Guidelines. Internal technical reference and calculation workspace for Automotive Industry Standards (AIS).</p>
+      </div>
+
+      <!-- Col 2: Navigation / Explore -->
+      <div class="footer-col">
+        <h4>Explore Headings</h4>
+        <ul>
+          <li><a href="{{ url_for('index') }}#dashboard">Dashboard Overview</a></li>
+          <li><a href="{{ url_for('standards') }}">Standards Register</a></li>
+          <li><a href="{{ url_for('index') }}#calculators">Formula Calculators</a></li>
+          <li><a href="{{ url_for('compare') }}">Comparative Study Engine</a></li>
+          <li><a href="{{ url_for('index') }}#ev">EV Standards Workspace</a></li>
+          <li><a href="{{ url_for('index') }}#compliance">Compliance Framework</a></li>
+          <li><a href="{{ url_for('index') }}#data">Data Requirements</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3: Key Standards -->
+      <div class="footer-col">
+        <h4>Key Standards</h4>
+        <ul>
+          <li><a href="{{ url_for('standard_detail', code='AIS-038') }}">AIS-038 (4W EV Safety)</a></li>
+          <li><a href="{{ url_for('standard_detail', code='AIS-156') }}">AIS-156 (2W/3W EV Safety)</a></li>
+          <li><a href="{{ url_for('standard_detail', code='AIS-039') }}">AIS-039 (Energy Consumption)</a></li>
+          <li><a href="{{ url_for('standard_detail', code='AIS-040') }}">AIS-040 (Driving Range)</a></li>
+          <li><a href="{{ url_for('standard_detail', code='AIS-138') }}">AIS-138 (EV Charging)</a></li>
+          <li><a href="{{ url_for('standard_detail', code='AIS-189') }}">AIS-189 (Cybersecurity)</a></li>
+          <li><a href="{{ url_for('standard_detail', code='AIS-190') }}">AIS-190 (OTA Software Updates)</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 4: Calculators -->
+      <div class="footer-col">
+        <h4>Interactive Calculators</h4>
+        <ul>
+          <li><a href="{{ url_for('calculator_page', slug='ais-003') }}">AIS-003: Starting Gradeability</a></li>
+          <li><a href="{{ url_for('calculator_page', slug='ais-004') }}">AIS-004: Radiation Limits</a></li>
+          <li><a href="{{ url_for('calculator_page', slug='ais-038') }}">AIS-038: Insulation Resistance</a></li>
+          <li><a href="{{ url_for('calculator_page', slug='ais-039') }}">AIS-039: Energy Correction</a></li>
+          <li><a href="{{ url_for('calculator_page', slug='ais-040') }}">AIS-040: Range &amp; Charging</a></li>
+          <li><a href="{{ url_for('calculator_page', slug='ais-048') }}">AIS-048: C Rate &amp; Capacity</a></li>
+          <li><a href="{{ url_for('calculator_page', slug='ais-138') }}">AIS-138: AC/DC Charging Current</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="footer-bottom">
+      <p>All rights reserved JSW Group 2026</p>
+    </div>
+  </div>
+</footer>
 
 {% block scripts %}{% endblock %}
 </body>
