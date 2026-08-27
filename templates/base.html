@@ -15,8 +15,8 @@
     <a href="{{ url_for('index') }}" style="display:flex;align-items:center;text-decoration:none;gap:14px;">
       <img src="{{ url_for('static', filename='jsw-logo.png') }}" alt="JSW Group" class="brand-logo" style="height:44px;width:auto;object-fit:contain;">
       <div style="border-left:2px solid var(--line);padding-left:14px;">
-        <div class="brand-title">AIS EXPLORER</div>
-        <div class="brand-sub">ENGINEERING DESIGN PRINCIPLES</div>
+        <div class="brand-title" style="font-size:14px;letter-spacing:0.05em;">ENGINEERING DESIGN PRINCIPLES</div>
+        <div class="brand-sub">RULE BOOK &amp; WORK GUIDELINES</div>
       </div>
     </a>
   </div>
@@ -32,7 +32,7 @@
     <a href="{{ url_for('compare') }}">Compare</a>
     <div class="nav-label">APPLICABILITY</div>
     <a href="{{ url_for('index') }}#ev">EV Standards</a>
-    <a href="{{ url_for('index') }}#compliance">Compliance</a>
+    <a href="{{ url_for('compliance') }}">Compliance</a>
     <div class="nav-label">DATA</div>
     <a href="{{ url_for('index') }}#data">Data Requirements</a>
   </aside>
@@ -62,7 +62,7 @@
           <li><a href="{{ url_for('index') }}#calculators">Formula Calculators</a></li>
           <li><a href="{{ url_for('compare') }}">Comparative Study Engine</a></li>
           <li><a href="{{ url_for('index') }}#ev">EV Standards Workspace</a></li>
-          <li><a href="{{ url_for('index') }}#compliance">Compliance Framework</a></li>
+          <li><a href="{{ url_for('compliance') }}">Compliance Framework</a></li>
           <li><a href="{{ url_for('index') }}#data">Data Requirements</a></li>
         </ul>
       </div>

@@ -1,0 +1,344 @@
+{% extends "base.html" %}
+
+{% block title %}Compliance Workspace | Engineering Design Principles{% endblock %}
+
+{% block content %}
+
+<section class="compliance-page" style="max-width: 1250px; margin: 0 auto; padding: 38px max(34px, 5vw) 70px;">
+
+  <!-- Breadcrumbs -->
+  <div class="breadcrumbs" style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:12px;letter-spacing:0.04em;">
+    Engineering Design Principles / Compliance
+  </div>
+
+  <span class="eyebrow" style="font-size:10px;font-weight:900;color:var(--red);letter-spacing:0.12em;display:block;margin-bottom:6px;">VEHICLE PROFILES</span>
+  <h1 style="color:var(--blue-dark);margin:0 0 12px;font-size:32px;font-weight:900;">Compliance</h1>
+
+  <p style="color:var(--muted);font-size:13px;line-height:1.7;margin:0 0 28px;max-width:750px;">
+    Create a vehicle profile to see which tracked standards are potentially applicable. This uses the standard's verified title and EV classification only — not its clause-level scope, which isn't loaded yet.
+  </p>
+
+  <!-- Profile Form Card -->
+  <div class="calc-card" style="padding:28px;margin-bottom:28px;">
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:20px;margin-bottom:20px;">
+      
+      <div class="calc-input-block" style="margin:0;">
+        <label for="project_name" style="font-size:10px;font-weight:900;letter-spacing:0.08em;color:var(--muted);display:block;margin-bottom:8px;">PROJECT NAME</label>
+        <input id="project_name" type="text" placeholder="e.g. EV Passenger Vehicle — M1" style="width:100%;max-width:none;">
+      </div>
+
+      <div class="calc-input-block" style="margin:0;">
+        <label for="vehicle_category" style="font-size:10px;font-weight:900;letter-spacing:0.08em;color:var(--muted);display:block;margin-bottom:8px;">VEHICLE CATEGORY</label>
+        <select id="vehicle_category" style="width:100%;padding:10px 12px;border:1px solid #b7c6d8;border-radius:4px;font-size:14px;font-weight:700;color:var(--ink);background:#fff;">
+          <option value="M1">M1 (Passenger, <=8 seats)</option>
+          <option value="M2">M2 (Passenger, >8 seats, <=5t)</option>
+          <option value="M3">M3 (Passenger, >8 seats, >5t)</option>
+          <option value="N1">N1 (Goods, <=3.5t)</option>
+          <option value="N2">N2 (Goods, >3.5t, <=12t)</option>
+          <option value="N3">N3 (Goods, >12t)</option>
+          <option value="L1">L1 (2W, <=50cc or <=4kW, <=45km/h)</option>
+          <option value="L2">L2 (3W, <=50cc or <=4kW, <=45km/h)</option>
+          <option value="L3">L3 (2W, >50cc or >4kW, >45km/h)</option>
+          <option value="L4">L4 (2W with sidecar)</option>
+          <option value="L5">L5 (3W, >50cc or >4kW, >45km/h)</option>
+          <option value="L7">L7 (Quadricycle)</option>
+          <option value="T">T (Agricultural Tractor)</option>
+          <option value="A4">A4 (Construction Equipment Vehicle)</option>
+        </select>
+      </div>
+
+      <div class="calc-input-block" style="margin:0;">
+        <label for="powertrain" style="font-size:10px;font-weight:900;letter-spacing:0.08em;color:var(--muted);display:block;margin-bottom:8px;">POWERTRAIN</label>
+        <select id="powertrain" style="width:100%;padding:10px 12px;border:1px solid #b7c6d8;border-radius:4px;font-size:14px;font-weight:700;color:var(--ink);background:#fff;">
+          <option value="EV">EV (Battery Electric)</option>
+          <option value="ICE">ICE (Internal Combustion)</option>
+          <option value="HEV">HEV (Hybrid Electric)</option>
+          <option value="FCEV">FCEV (Fuel Cell Electric)</option>
+        </select>
+      </div>
+
+    </div>
+
+    <button type="button" class="compare-button calculate" onclick="saveVehicleProfile()" style="font-size:12px;padding:10px 24px;font-weight:900;letter-spacing:0.06em;background:var(--blue-dark);color:#fff;border:none;border-radius:4px;cursor:pointer;">
+      Save profile
+    </button>
+  </div>
+
+  <!-- Profiles list and Evaluation -->
+  <div style="display:grid;grid-template-columns:300px 1fr;gap:28px;">
+    
+    <!-- Left column: saved profiles list -->
+    <div style="background:#fff;border:1px solid var(--line);border-radius:8px;padding:20px;box-shadow:var(--shadow);align-self:start;">
+      <h3 style="margin-top:0;color:var(--blue-dark);font-size:14px;font-weight:800;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:12px;">SAVED VEHICLE PROFILES</h3>
+      <div id="profilesList" style="display:grid;gap:8px;">
+        <div style="color:var(--muted);font-size:12px;text-align:center;padding:20px 0;">No vehicle profiles yet.</div>
+      </div>
+    </div>
+
+    <!-- Right column: selected profile detailed compliance rule list -->
+    <div>
+      <div id="complianceDetailsHeader" style="background:#f0f4f9;border:1px solid var(--line);border-radius:8px;padding:16px 20px;margin-bottom:16px;box-shadow:var(--shadow);display:none;">
+        <h2 id="activeProfileTitle" style="margin:0 0 4px;font-size:18px;color:var(--blue-dark);">Active Profile</h2>
+        <p id="activeProfileDesc" style="margin:0;font-size:12px;color:var(--muted);font-weight:600;"></p>
+      </div>
+
+      <div id="complianceRulesList" style="display:grid;gap:14px;">
+        <!-- Dynamically populated compliance cards -->
+        <div style="background:#fff;border:1px solid var(--line);border-radius:8px;padding:40px;text-align:center;color:var(--muted);box-shadow:var(--shadow);">
+          <h3>Select or create a vehicle profile to view compliance rule analysis</h3>
+          <p style="font-size:12px;">The system will automatically run rule validation checks for all 15 tracked automotive standards.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<script>
+// Load standards from template context
+const standardsData = {{ standards | tojson }};
+
+// Load saved profiles from localStorage on start
+let vehicleProfiles = [];
+try {
+  const stored = localStorage.getItem('jsw_vehicle_profiles');
+  if (stored) {
+    vehicleProfiles = JSON.parse(stored);
+  }
+} catch (e) {
+  console.error("Error reading localStorage", e);
+}
+
+let activeProfileIndex = vehicleProfiles.length > 0 ? 0 : -1;
+
+function saveVehicleProfile() {
+  const nameEl = document.getElementById('project_name');
+  const catEl = document.getElementById('vehicle_category');
+  const ptEl = document.getElementById('powertrain');
+
+  const name = nameEl.value.trim() || `Unnamed Profile (${catEl.value} - ${ptEl.value})`;
+  
+  const newProfile = {
+    name: name,
+    category: catEl.value,
+    powertrain: ptEl.value,
+    timestamp: Date.now()
+  };
+
+  vehicleProfiles.unshift(newProfile); // Add to beginning
+  localStorage.setItem('jsw_vehicle_profiles', JSON.stringify(vehicleProfiles));
+
+  // Reset form name field
+  nameEl.value = '';
+
+  activeProfileIndex = 0;
+  renderProfiles();
+  evaluateCompliance();
+}
+
+function deleteProfile(idx, event) {
+  event.stopPropagation();
+  vehicleProfiles.splice(idx, 1);
+  localStorage.setItem('jsw_vehicle_profiles', JSON.stringify(vehicleProfiles));
+
+  if (activeProfileIndex >= vehicleProfiles.length) {
+    activeProfileIndex = vehicleProfiles.length - 1;
+  }
+  renderProfiles();
+  evaluateCompliance();
+}
+
+function selectProfile(idx) {
+  activeProfileIndex = idx;
+  renderProfiles();
+  evaluateCompliance();
+}
+
+function renderProfiles() {
+  const listContainer = document.getElementById('profilesList');
+  if (!listContainer) return;
+
+  if (vehicleProfiles.length === 0) {
+    listContainer.innerHTML = `<div style="color:var(--muted);font-size:12px;text-align:center;padding:20px 0;">No vehicle profiles yet.</div>`;
+    return;
+  }
+
+  listContainer.innerHTML = vehicleProfiles.map((p, idx) => {
+    const isActive = idx === activeProfileIndex;
+    return `
+      <div onclick="selectProfile(${idx})" style="padding:14px;border-radius:6px;border:1px solid ${isActive ? 'var(--blue)' : 'var(--line)'};background:${isActive ? '#f0f4f9' : '#fff'};cursor:pointer;position:relative;transition:all 0.15s;" class="profile-item-card">
+        <strong style="display:block;font-size:13px;color:var(--blue-dark);margin-bottom:4px;padding-right:24px;">${p.name}</strong>
+        <span style="font-size:11px;color:var(--muted);font-weight:700;">${p.category} &middot; ${p.powertrain}</span>
+        <button onclick="deleteProfile(${idx}, event)" style="position:absolute;top:12px;right:12px;background:none;border:none;color:var(--red);font-weight:900;font-size:14px;cursor:pointer;padding:0 4px;" title="Delete Profile">&times;</button>
+      </div>
+    `;
+  }).join('');
+}
+
+function evaluateCompliance() {
+  const header = document.getElementById('complianceDetailsHeader');
+  const title = document.getElementById('activeProfileTitle');
+  const desc = document.getElementById('activeProfileDesc');
+  const list = document.getElementById('complianceRulesList');
+
+  if (activeProfileIndex < 0 || activeProfileIndex >= vehicleProfiles.length) {
+    header.style.display = 'none';
+    list.innerHTML = `
+      <div style="background:#fff;border:1px solid var(--line);border-radius:8px;padding:40px;text-align:center;color:var(--muted);box-shadow:var(--shadow);">
+        <h3>Select or create a vehicle profile to view compliance rule analysis</h3>
+        <p style="font-size:12px;">The system will automatically run rule validation checks for all 15 tracked automotive standards.</p>
+      </div>
+    `;
+    return;
+  }
+
+  const p = vehicleProfiles[activeProfileIndex];
+  header.style.display = 'block';
+  title.textContent = p.name;
+  desc.textContent = `Vehicle Category: ${p.category} | Powertrain: ${p.powertrain}`;
+
+  // Evaluate rules for all 15 standards
+  const ruleResults = Object.keys(standardsData).map(code => {
+    const s = standardsData[code];
+    let isApplicable = false;
+    let ruleText = "";
+
+    const cat = p.category;
+    const pt = p.powertrain;
+
+    const isEV = (pt === 'EV' || pt === 'HEV' || pt === 'FCEV');
+
+    // Rule Logic
+    if (code === 'AIS-003') {
+      isApplicable = (cat.startsWith('M') || cat.startsWith('N'));
+      ruleText = isApplicable 
+        ? "Gradeability measurement is mandatory for M & N category motor vehicles."
+        : "Gradeability standard does not apply to L category, agricultural tractors (T), or construction vehicles (A4).";
+    } 
+    else if (code === 'AIS-004') {
+      isApplicable = true;
+      ruleText = "Electromagnetic Compatibility (EMC) protection and testing is mandatory for all road vehicle categories.";
+    } 
+    else if (code === 'AIS-038') {
+      isApplicable = (isEV && (cat.startsWith('M') || cat.startsWith('N')));
+      ruleText = isApplicable
+        ? `Mandatory: Specific electrical safety requirements for ${cat} Electric Power Train vehicles.`
+        : "Only applies to M & N category vehicles with hybrid, battery electric, or fuel cell powertrains.";
+    } 
+    else if (code === 'AIS-039') {
+      isApplicable = (isEV && (cat.startsWith('M') || cat.startsWith('N') || cat.startsWith('L')));
+      ruleText = isApplicable
+        ? `Mandatory: Measurement of electrical energy consumption (Wh/km) for EV categories L, M, and N.`
+        : "Only applies to vehicles with electric powertrains (EV/HEV/FCEV) in L, M, or N categories.";
+    } 
+    else if (code === 'AIS-040') {
+      isApplicable = (pt === 'EV' && (cat.startsWith('M') || cat.startsWith('N') || cat.startsWith('L')));
+      ruleText = isApplicable
+        ? `Mandatory: Measurement of range (km) on type-approval drive cycle is required for pure Battery Electric Vehicles.`
+        : "Only applies to pure Battery Electric Vehicles (EV) in L, M, or N categories.";
+    } 
+    else if (code === 'AIS-041') {
+      isApplicable = (isEV && (cat.startsWith('M') || cat.startsWith('N') || cat.startsWith('L')));
+      ruleText = isApplicable
+        ? "Mandatory: Net power and 30-minute maximum power measurements for electric powertrain vehicles."
+        : "Only applies to vehicles with electric/hybrid powertrains in L, M, or N categories.";
+    } 
+    else if (code === 'AIS-048') {
+      isApplicable = isEV;
+      ruleText = isApplicable
+        ? "Mandatory safety abuse and environmental tests for all EV traction battery packs and cells."
+        : "Only applies to vehicles fitted with traction batteries (EV/HEV/FCEV).";
+    } 
+    else if (code === 'AIS-049') {
+      isApplicable = isEV;
+      ruleText = isApplicable
+        ? "Type Approval framework and CMVR administrative requirements for Battery Operated Vehicles."
+        : "Only applies to battery-operated and hybrid electric vehicles.";
+    } 
+    else if (code === 'AIS-053') {
+      isApplicable = true;
+      ruleText = "Classification and terminology standard defining vehicle category boundaries applies universally.";
+    } 
+    else if (code === 'AIS-071') {
+      isApplicable = true;
+      ruleText = "Identification of controls, tell-tales and indicators is mandatory for instrument cluster layout design.";
+    } 
+    else if (code === 'AIS-137') {
+      isApplicable = true;
+      if (pt === 'ICE' || pt === 'HEV') {
+        ruleText = "Applicable: Tailpipe emission test limits and Metrology equipment rules for ICE/Hybrid engines.";
+      } else {
+        ruleText = "Applicable: Technical metrology, dynamometer calibration, and EV test procedure alignments.";
+      }
+    } 
+    else if (code === 'AIS-138') {
+      isApplicable = isEV;
+      ruleText = isApplicable
+        ? "Mandatory safety, control-pilot signaling (PWM), and DC insulation monitoring requirements for conductive charging."
+        : "Only applies to electric vehicles with conductive charging interfaces.";
+    } 
+    else if (code === 'AIS-156') {
+      isApplicable = (isEV && cat.startsWith('L'));
+      ruleText = isApplicable
+        ? "Mandatory: Specific battery and powertrain safety rules for L Category Electric Vehicles (2W/3W)."
+        : "Only applies to L-category vehicles (2-wheelers/3-wheelers) with electric powertrains.";
+    } 
+    else if (code === 'AIS-189') {
+      isApplicable = (cat.startsWith('M') || cat.startsWith('N') || cat === 'L7' || cat === 'T');
+      ruleText = isApplicable
+        ? "Mandatory: Cyber Security Management System (CSMS) protection and threat vector mitigation."
+        : "Only applies to M, N, L7, and T category vehicles with connected subsystems or electronic ECUs.";
+    } 
+    else if (code === 'AIS-190') {
+      isApplicable = (cat.startsWith('M') || cat.startsWith('N') || cat === 'T' || cat === 'A4');
+      ruleText = isApplicable
+        ? "Mandatory: Software Update Management System (SUMS) and RxSWIN tracking for software updates."
+        : "Only applies to categories supporting programmable software modifications (M, N, T, A4).";
+    }
+
+    return {
+      code: code,
+      title: s.title,
+      isApplicable: isApplicable,
+      ruleText: ruleText,
+      category: s.category,
+      calcAvailable: s.calculator_available
+    };
+  });
+
+  // Sort: Applicable first, then non-applicable
+  ruleResults.sort((a, b) => b.isApplicable - a.isApplicable);
+
+  list.innerHTML = ruleResults.map(r => {
+    return `
+      <div style="background:#fff;border:1px solid var(--line);border-left:5px solid ${r.isApplicable ? 'var(--blue)' : '#cbd5e1'};border-radius:8px;padding:18px 20px;box-shadow:var(--shadow);opacity:${r.isApplicable ? 1 : 0.7};">
+        <div style="display:flex;justify-content:between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-family:monospace;font-weight:900;color:var(--blue-dark);font-size:15px;">${r.code}</span>
+            <span style="font-size:9px;font-weight:900;padding:3px 8px;border-radius:3px;background:${r.isApplicable ? '#d1fae5;color:#065f46;' : '#f1f5f9;color:#475569;'}">
+              ${r.isApplicable ? 'APPLICABLE' : 'NOT APPLICABLE'}
+            </span>
+          </div>
+          <div style="margin-left:auto;display:flex;gap:8px;">
+            <a href="/standards/${r.code}" style="font-size:10px;font-weight:800;color:var(--blue);text-decoration:none;letter-spacing:0.04em;">VIEW STANDARD &rarr;</a>
+            ${r.calcAvailable ? `<a href="/calculator/${r.code.toLowerCase()}" style="font-size:10px;font-weight:800;color:#10b981;text-decoration:none;letter-spacing:0.04em;margin-left:8px;">OPEN CALC ⚡</a>` : ''}
+          </div>
+        </div>
+        <h4 style="margin:0 0 6px;color:var(--blue-dark);font-size:14px;line-height:1.4;">${r.title}</h4>
+        <p style="margin:0;font-size:12px;color:var(--muted);line-height:1.6;font-style:italic;">
+          ${r.ruleText}
+        </p>
+      </div>
+    `;
+  }).join('');
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+  renderProfiles();
+  evaluateCompliance();
+});
+</script>
+
+{% endblock %}
