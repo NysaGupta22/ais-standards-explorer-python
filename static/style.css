@@ -1540,3 +1540,55 @@ footer {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* =========================================================
+   COMPARISON MATRIX TABLE & FONTS
+   ========================================================= */
+
+.comparison-table {
+  display: grid;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  overflow: hidden;
+  background: #fff;
+  box-shadow: var(--shadow);
+  margin-bottom: 28px;
+}
+
+.comparison-row {
+  display: grid;
+  grid-template-columns: 220px 1fr 1fr;
+  border-bottom: 1px solid var(--line);
+  align-items: center;
+}
+
+.comparison-row:last-child {
+  border-bottom: none;
+}
+
+.comparison-row > div {
+  padding: 14px 18px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink);
+  font-family: Inter, Arial, sans-serif;
+}
+
+.comparison-label {
+  font-weight: 800;
+  color: var(--blue-dark) !important;
+  background: #f7fafd;
+  border-right: 1px solid var(--line);
+  font-size: 11px !important;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.comparison-row b.pass {
+  color: #10b981;
+}
+
+.comparison-row b.fail {
+  color: var(--red);
+}

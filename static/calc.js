@@ -169,3 +169,48 @@ async function calc138() {
   calc138_ac_high();
   calc138_dc();
 }
+
+// AIS-003 Dedicated Separated Calculations
+function calc003_starting() {
+  const q = n('q');
+  const wt = n('wt');
+  const wr = n('wr');
+  const out = document.getElementById('out_ais003_g');
+  
+  if (wr <= 0 || wt <= 0) {
+    if (out) out.textContent = '—';
+    return;
+  }
+
+  const rad = q * Math.PI / 180;
+  const ratio = Math.sin(rad) * wt / wr;
+  
+  if (ratio < -1 || ratio > 1) {
+    if (out) out.textContent = 'Invalid (arcsin ratio > 1)';
+    return;
+  }
+
+  const g = 100 * Math.tan(Math.asin(ratio));
+  if (out) out.textContent = `${f(g)} %`;
+}
+
+function calc003_extrapolated() {
+  const go = n('go');
+  const to = n('to');
+  const tn = n('tn');
+  const gro = n('gro');
+  const grn = n('grn');
+  const gvwo = n('gvwo');
+  const gvwn = n('gvwn');
+  const tro = n('tro');
+  const trn = n('trn');
+  const out = document.getElementById('out_ais003_gn');
+
+  if (to <= 0 || gro <= 0 || gvwn <= 0 || trn <= 0) {
+    if (out) out.textContent = '—';
+    return;
+  }
+
+  const gn = (tn / to) * (grn / gro) * (gvwo / gvwn) * (tro / trn) * go;
+  if (out) out.textContent = `${f(gn)} %`;
+}
