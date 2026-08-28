@@ -30,7 +30,7 @@ body {
    ========================================================= */
 
 .top {
-  height: 76px;
+  height: 84px;
   background: #fff;
   border-bottom: 4px solid var(--red);
   display: flex;

@@ -26,12 +26,48 @@ async function calc003() {
 }
 
 // AIS-038
-async function calc038() {
-  try {
-    const j = await post('/api/calc/ais038', { u: n('u38'), v1: n('v138'), vp: n('vp38'), v2: n('v238') });
-    document.getElementById('out038').innerHTML =
-      `Minimum: ${f(j.minimum_ohm)} Ω\nCalculated insulation resistance: ${f(j.resistance_ohm)} Ω\n<b class="${j.pass ? 'pass' : 'fail'}">${j.pass ? 'PASS' : 'FAIL'}</b>`;
-  } catch (e) { document.getElementById('out038').textContent = e.message; }
+function calc038() {
+  const u = n('u38');
+  const r0 = n('r038') > 0 ? n('r038') : 500;
+  const v1 = n('v138');
+  const vp = n('vp38');
+  const v2 = n('v238');
+
+  const noteEl = document.getElementById('eval_condition_note');
+  const rminEl = document.getElementById('out_ais038_rmin');
+  const riEl = document.getElementById('out_ais038_ri');
+  const statusEl = document.getElementById('out_ais038_status');
+
+  const rmin = u * 500;
+
+  if (v2 <= 0) {
+    if (riEl) riEl.textContent = '—';
+    if (rminEl) rminEl.textContent = `${f(rmin)} Ω (${f(rmin / 1000)} kΩ)`;
+    if (statusEl) statusEl.innerHTML = '<span style="color:var(--muted);">Enter valid V2 > 0</span>';
+    return;
+  }
+
+  let ri = 0;
+  let conditionText = "";
+
+  if (v1 >= vp) {
+    ri = ((v1 - v2) / v2) * r0;
+    conditionText = `Active Formula: V₁ ≥ V₁′ (V₁ = ${f(v1)} V, V₁′ = ${f(vp)} V) — Negative bus insertion formula applied with R₀ = ${f(r0)} Ω.`;
+  } else {
+    ri = ((vp - v2) / v2) * r0;
+    conditionText = `Active Formula: V₁′ > V₁ (V₁′ = ${f(vp)} V, V₁ = ${f(v1)} V) — Positive bus insertion formula applied with R₀ = ${f(r0)} Ω.`;
+  }
+
+  const isPass = ri >= rmin;
+
+  if (noteEl) noteEl.textContent = conditionText;
+  if (rminEl) rminEl.textContent = `${f(rmin)} Ω (${f(rmin / 1000)} kΩ)`;
+  if (riEl) riEl.textContent = `${f(ri)} Ω (${f(ri / 1000)} kΩ)`;
+  if (statusEl) {
+    statusEl.innerHTML = isPass 
+      ? '<span style="background:#10b981;color:#fff;padding:4px 12px;border-radius:4px;font-size:12px;font-weight:900;">PASS (Rᵢ ≥ R_min)</span>'
+      : '<span style="background:var(--red);color:#fff;padding:4px 12px;border-radius:4px;font-size:12px;font-weight:900;">FAIL (Rᵢ < R_min)</span>';
+  }
 }
 
 // AIS-039

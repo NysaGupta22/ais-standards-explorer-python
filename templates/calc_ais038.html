@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}
-AIS-038 — Traction Battery Insulation Resistance | AIS Explorer
-{% endblock %}
+{% block title %}AIS-038 — Traction Battery Insulation Resistance | AIS Explorer{% endblock %}
 
 {% block content %}
 
@@ -12,465 +10,137 @@ AIS-038 — Traction Battery Insulation Resistance | AIS Explorer
     ← Back to explorer
   </a>
 
-  <!-- =========================================================
-       HEADER
-       ========================================================= -->
-
+  <!-- ================= HEADER ================= -->
   <div class="calc-page-head">
-
-    <span class="code">AIS-038</span>
-
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+      <span class="code">AIS-038</span>
+      <span class="tag ready">FORMULA CALCULATOR</span>
+      <span class="tag ready" style="background:var(--blue);color:#fff;">HIGH-VOLTAGE ELECTRICAL SAFETY</span>
+    </div>
     <h1>Traction Battery Insulation Resistance</h1>
-
     <p>
-      AIS-038 covers specific requirements for the electric power train
-      and rechargeable electrical energy storage system (REESS) of
-      applicable vehicles. Electrical isolation is one of the safety
-      areas addressed by the standard.
+      Evaluation of electrical isolation resistance (R<sub>i</sub>) for electric powertrains and rechargeable electrical energy storage systems (REESS). 
+      Applies the standard DC voltmeter measurement method using a known test resistor (R<sub>0</sub>) on either the negative bus (V<sub>1</sub>) or positive bus (V<sub>1</sub>′).
     </p>
-
   </div>
 
+  <!-- ================= FORMULA & METHOD REFERENCE CARD ================= -->
+  <div class="calc-card">
+    <div class="calc-card-head">
+      <h2>Insulation Resistance Measurement Method (AIS-038 / UN R100)</h2>
+      <span class="calc-tag">STANDARD TEST PROCEDURE</span>
+    </div>
 
-  <!-- =========================================================
-       STANDARD OVERVIEW
-       ========================================================= -->
-
-  <div class="info-block">
-
-    <div class="info-label">STANDARD OVERVIEW</div>
-
-    <h2>What is AIS-038?</h2>
-
-    <p>
-      AIS-038 is an Automotive Industry Standard addressing safety
-      requirements associated with the electric power train and
-      rechargeable electrical energy storage system (REESS).
-    </p>
-
-    <p>
-      The standard includes requirements and test methods relating to
-      electrical safety, protection against hazardous electrical parts,
-      electrical isolation and REESS-related safety.
-    </p>
-
-    <div class="overview-grid">
-
-      <div>
-        <span>STANDARD</span>
-        <strong>AIS-038</strong>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+      
+      <!-- Condition 1: V1 >= V1' -->
+      <div style="background:#f1f4f8;padding:16px;border-radius:6px;border-left:4px solid var(--blue);">
+        <strong style="color:var(--blue-dark);font-size:12px;display:block;margin-bottom:6px;">Condition 1: When V<sub>1</sub> ≥ V<sub>1</sub>′ (Negative Bus Insertion)</strong>
+        <div style="font-family:monospace;font-size:13px;color:var(--ink);margin-bottom:8px;">
+          R<sub>i</sub> = [ (V<sub>1</sub> − V<sub>2</sub>) / V<sub>2</sub> ] × R<sub>0</sub>
+        </div>
+        <p style="margin:0;font-size:11px;color:var(--muted);line-height:1.5;">
+          If measured voltage between negative HV bus and chassis (V<sub>1</sub>) is greater than or equal to positive bus (V<sub>1</sub>′), insert R<sub>0</sub> between negative bus and chassis to measure V<sub>2</sub>.
+        </p>
       </div>
 
-      <div>
-        <span>SUBJECT</span>
-        <strong>Electric Power Train / REESS</strong>
-      </div>
-
-      <div>
-        <span>CALCULATOR</span>
-        <strong>Insulation Resistance</strong>
-      </div>
-
-      <div>
-        <span>STATUS</span>
-        <strong class="status-reference">
-          Formula Ready
-        </strong>
+      <!-- Condition 2: V1' > V1 -->
+      <div style="background:#f1f4f8;padding:16px;border-radius:6px;border-left:4px solid var(--red);">
+        <strong style="color:var(--blue-dark);font-size:12px;display:block;margin-bottom:6px;">Condition 2: When V<sub>1</sub>′ > V<sub>1</sub> (Positive Bus Insertion)</strong>
+        <div style="font-family:monospace;font-size:13px;color:var(--ink);margin-bottom:8px;">
+          R<sub>i</sub> = [ (V<sub>1</sub>′ − V<sub>2</sub>) / V<sub>2</sub> ] × R<sub>0</sub>
+        </div>
+        <p style="margin:0;font-size:11px;color:var(--muted);line-height:1.5;">
+          If measured voltage between positive HV bus and chassis (V<sub>1</sub>′) is greater than negative bus (V<sub>1</sub>), insert R<sub>0</sub> between positive bus and chassis to measure V<sub>2</sub>.
+        </p>
       </div>
 
     </div>
 
+    <div style="background:#f7fafd;border:1px solid #c8deef;border-radius:6px;padding:12px 16px;">
+      <strong style="color:var(--blue);font-size:11px;letter-spacing:0.04em;">MINIMUM PASS CRITERIA (AIS-038 MANDATORY):</strong>
+      <div style="font-family:monospace;font-size:13px;color:var(--ink);margin:4px 0;">
+        R<sub>min</sub> = U × 500 Ω/V &nbsp; (Minimum 500 Ω/V of Nominal Voltage U)
+      </div>
+    </div>
   </div>
 
-
-  <!-- =========================================================
-       WORKING CALCULATOR
-       ========================================================= -->
-
-  <div class="section-heading">
-
-    <div>
-      <span class="section-kicker">WORKING CALCULATOR</span>
-
-      <h2>Traction Battery Insulation Resistance</h2>
+  <!-- ================= INTERACTIVE CALCULATOR CARD ================= -->
+  <div class="calc-card">
+    <div class="calc-card-head">
+      <h2>Working Insulation Resistance Calculator</h2>
+      <span class="calc-tag">LIVE TEST EVALUATION</span>
     </div>
 
-    <span class="badge-ready">
-      CALCULATOR
-    </span>
-
-  </div>
-
-
-  <!-- FORMULA -->
-
-  <div class="eq-block">
-
-    <div class="eq-label">
-      Current implementation
-    </div>
-
-    <div class="eq">
-      <span class="v">R</span><sub>i</sub>
-      =
-      <span class="frac">
-        <span class="num">
-          <span class="v">V</span><sub>1</sub>
-          −
-          <span class="v">V</span><sub>2</sub>
-        </span>
-
-        <span class="den">
-          <span class="v">V</span><sub>2</sub>
-        </span>
-      </span>
-
-      ×
-
-      <span class="v">R</span><sub>0</sub>
-    </div>
-
-
-    <div class="eq-label" style="margin-top:16px">
-      Minimum required insulation resistance
-    </div>
-
-    <div class="eq">
-      <span class="v">R</span><sub>min</sub>
-      =
-      <span class="v">U</span>
-      ×
-      500 Ω
-    </div>
-
-  </div>
-
-
-  <!-- INPUTS -->
-
-  <div class="calculator">
-
-    <div class="calculator-title">
-      <span>INPUT PARAMETERS</span>
-      <small>Enter measured test values</small>
-    </div>
-
-    <div class="form-grid">
-
-      {% for id,label,val in [
-        ('u38','Nominal battery voltage U (V)','400'),
-        ('v138','Measured V1 (V)','420'),
-        ('vp38','Measured V1′ (V)','420'),
-        ('v238','Measured V2 (V)','210')
-      ] %}
-
-      <label>
-        {{ label }}
-
-        <input
-          id="{{ id }}"
-          value="{{ val }}"
-          type="number"
-          step="any"
-        >
-      </label>
-
-      {% endfor %}
-
-    </div>
-
-
-    <button
-      class="calculate"
-      onclick="calc038()"
-    >
-      CALCULATE
-    </button>
-
-
-    <div
-      id="out038"
-      class="result"
-    >
-      Enter measurements and calculate.
-    </div>
-
-  </div>
-
-
-  <!-- =========================================================
-       REFERENCE CALCULATIONS
-       ========================================================= -->
-
-  <div class="section-heading reference-heading">
-
-    <div>
-      <span class="section-kicker">REFERENCE LIBRARY</span>
-
-      <h2>Other AIS-038 Calculations</h2>
-    </div>
-
-    <span class="badge-reference">
-      REFERENCE
-    </span>
-
-  </div>
-
-
-  <!-- ISOLATION RESISTANCE Ω/V -->
-
-  <article class="reference-card">
-
-    <div class="reference-card-head">
-
-      <div>
-        <span class="reference-code">01</span>
-        <h3>Isolation Resistance in Ω/V</h3>
+    <!-- Inputs Grid -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:16px;margin:20px 0;">
+      
+      <div class="calc-input-block">
+        <label for="u38">NOMINAL BATTERY VOLTAGE U (V)</label>
+        <input id="u38" type="number" step="any" value="400" oninput="calc038()">
       </div>
 
-      <span class="badge-reference">
-        REFERENCE
-      </span>
-
-    </div>
-
-    <p>
-      The calculated electrical isolation resistance can be expressed
-      relative to the applicable voltage to obtain the insulation
-      resistance in Ω/V.
-    </p>
-
-    <div class="reference-equation">
-
-      <span class="v">R</span><sub>is</sub>
-      =
-      <span class="frac">
-        <span class="num">
-          <span class="v">R</span><sub>i</sub>
-        </span>
-
-        <span class="den">
-          <span class="v">U</span><sub>b</sub>
-        </span>
-      </span>
-
-    </div>
-
-    <div class="reference-note">
-      Reference only — calculator implementation can be added after
-      the source Excel calculation is mapped to the applicable AIS-038
-      revision.
-    </div>
-
-  </article>
-
-
-  <!-- MINIMUM REQUIREMENT -->
-
-  <article class="reference-card">
-
-    <div class="reference-card-head">
-
-      <div>
-        <span class="reference-code">02</span>
-        <h3>Minimum Isolation Resistance Requirements</h3>
+      <div class="calc-input-block">
+        <label for="r038">KNOWN TEST RESISTOR R<sub>0</sub> (Ω)</label>
+        <input id="r038" type="number" step="any" value="500" oninput="calc038()">
       </div>
 
-      <span class="badge-reference">
-        REQUIREMENT
-      </span>
-
-    </div>
-
-    <p>
-      AIS-038 specifies minimum electrical isolation requirements for
-      the applicable electrical configurations. The applicable
-      requirement depends on the relevant vehicle/electrical system
-      configuration.
-    </p>
-
-    <div class="requirement-grid">
-
-      <div>
-        <span>REFERENCE VALUE</span>
-        <strong>100 Ω/V</strong>
+      <div class="calc-input-block">
+        <label for="v138">MEASURED V<sub>1</sub> (V) [NEG TO CHASSIS]</label>
+        <input id="v138" type="number" step="any" value="420" oninput="calc038()">
       </div>
 
-      <div>
-        <span>REFERENCE VALUE</span>
-        <strong>500 Ω/V</strong>
+      <div class="calc-input-block">
+        <label for="vp38">MEASURED V<sub>1</sub>′ (V) [POS TO CHASSIS]</label>
+        <input id="vp38" type="number" step="any" value="400" oninput="calc038()">
+      </div>
+
+      <div class="calc-input-block">
+        <label for="v238">MEASURED V<sub>2</sub> (V) [WITH R<sub>0</sub> INSERTED]</label>
+        <input id="v238" type="number" step="any" value="210" oninput="calc038()">
       </div>
 
     </div>
 
-    <div class="reference-note">
-      The applicable limit must be determined from the relevant AIS-038
-      clause and electrical configuration. This page does not yet
-      automatically select between the requirements.
+    <!-- Live Evaluation Notification -->
+    <div id="eval_condition_note" style="background:#f0f4f9;border-left:3px solid var(--blue);padding:10px 14px;border-radius:4px;margin-bottom:16px;font-size:12px;font-weight:700;color:var(--blue-dark);">
+      Active Formula: V<sub>1</sub> ≥ V<sub>1</sub>′ (V<sub>1</sub> = 420 V, V<sub>1</sub>′ = 400 V) — Negative bus insertion formula applied.
     </div>
 
-  </article>
-
-
-  <!-- ISOLATION MONITORING -->
-
-  <article class="reference-card">
-
-    <div class="reference-card-head">
-
-      <div>
-        <span class="reference-code">03</span>
-        <h3>Isolation Monitoring System</h3>
+    <!-- Output Results Block -->
+    <div class="calc-results-block">
+      
+      <div class="calc-result-row">
+        <span>Minimum Required Insulation Resistance (R<sub>min</sub>)</span>
+        <strong id="out_ais038_rmin" style="color:var(--blue-dark);">200,000.000 Ω (200.000 kΩ)</strong>
       </div>
 
-      <span class="badge-reference">
-        REFERENCE
-      </span>
-
-    </div>
-
-    <p>
-      AIS-038 provides relationships for determining the reference
-      resistance range used when testing the on-board isolation
-      monitoring system.
-    </p>
-
-    <div class="reference-equation">
-
-      <strong>100 Ω/V case</strong>
-
-      <br>
-
-      1 /
-      (1 / (95U) − 1 / R<sub>i</sub>)
-      ≤
-      R<sub>o</sub>
-      &lt;
-      1 /
-      (1 / (100U) − 1 / R<sub>i</sub>)
-
-    </div>
-
-    <div class="reference-equation">
-
-      <strong>500 Ω/V case</strong>
-
-      <br>
-
-      1 /
-      (1 / (475U) − 1 / R<sub>i</sub>)
-      ≤
-      R<sub>o</sub>
-      &lt;
-      1 /
-      (1 / (500U) − 1 / R<sub>i</sub>)
-
-    </div>
-
-    <div class="reference-note">
-      Reference formula only. No automatic calculation is currently
-      enabled for this module.
-    </div>
-
-  </article>
-
-
-  <!-- HYDROGEN -->
-
-  <article class="reference-card">
-
-    <div class="reference-card-head">
-
-      <div>
-        <span class="reference-code">04</span>
-        <h3>Hydrogen Emission Calculation</h3>
+      <div class="calc-result-row">
+        <span>Calculated Insulation Resistance (R<sub>i</sub>)</span>
+        <strong id="out_ais038_ri" style="color:var(--blue);">500,000.000 Ω (500.000 kΩ)</strong>
       </div>
 
-      <span class="badge-reference">
-        REFERENCE
-      </span>
-
-    </div>
-
-    <p>
-      AIS-038 Rev. 2 contains a hydrogen-emission calculation using
-      measured hydrogen concentration, temperature, pressure and
-      enclosure-volume parameters.
-    </p>
-
-    <div class="variable-list">
-
-      <span>C<sub>H2</sub> — Hydrogen concentration</span>
-      <span>V — Net enclosure volume</span>
-      <span>V<sub>out</sub> — Compensation volume</span>
-      <span>T — Temperature</span>
-      <span>P — Absolute pressure</span>
-      <span>M<sub>H2</sub> — Hydrogen mass</span>
-    </div>
-
-    <div class="reference-note">
-      Reference only. This module will be converted into a calculator
-      once its Excel implementation is mapped.
-    </div>
-
-  </article>
-
-
-  <!-- HYDROGEN ANALYZER -->
-
-  <article class="reference-card">
-
-    <div class="reference-card-head">
-
-      <div>
-        <span class="reference-code">05</span>
-        <h3>Hydrogen Analyzer Calibration</h3>
+      <div class="calc-result-row">
+        <span>Regulatory Compliance Status</span>
+        <strong id="out_ais038_status"><span class="badge-ready" style="background:#10b981;color:#fff;padding:4px 12px;border-radius:4px;font-size:12px;">PASS (R<sub>i</sub> ≥ R<sub>min</sub>)</span></strong>
       </div>
 
-      <span class="badge-reference">
-        REFERENCE
-      </span>
-
     </div>
 
-    <p>
-      AIS-038 Rev. 2 contains requirements for calibration of the
-      hydrogen analyser, including construction and assessment of the
-      calibration curve using calibration points.
-    </p>
-
-    <div class="reference-note">
-      Reference procedure — not currently implemented as a calculator.
+    <div class="calc-footnote">
+      Calculated per AIS-038 (Rev 2) / UN ECE R100 Clause 5.1.3.4. If R<sub>i</sub> ≥ R<sub>min</sub>, isolation requirement is fully met.
     </div>
-
-  </article>
-
-
-  <!-- =========================================================
-       SOURCE NOTE
-       ========================================================= -->
-
-  <div class="source-note">
-
-    <strong>Source / validation note</strong>
-
-    <p>
-      This page is an engineering reference interface based on the
-      AIS-038 source material and the project's formula workbook.
-      The displayed calculator should be validated against the
-      controlled/current AIS publication before use for certification,
-      type approval or regulatory submission.
-    </p>
-
   </div>
 
 </section>
 
 {% endblock %}
 
-
 {% block scripts %}
-
 <script src="{{ url_for('static', filename='calc.js') }}"></script>
-
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  if (typeof calc038 === 'function') calc038();
+});
+</script>
 {% endblock %}

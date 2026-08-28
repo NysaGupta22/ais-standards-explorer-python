@@ -31,22 +31,22 @@
     <span style="font-size:10px;font-weight:900;color:var(--red);letter-spacing:0.12em;display:block;margin-bottom:10px;">POPULAR ENGINEERING COMPARISONS</span>
     <div style="display:flex;flex-wrap:wrap;gap:8px;">
       <button type="button" class="preset-btn" onclick="setComparison('AIS-038', 'AIS-156')" style="background:#f0f4f9;border:1px solid #b7c6d8;padding:7px 14px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;color:var(--blue-dark);">
-        ⚡ AIS-038 vs AIS-156 (4W vs 2W/3W EV Safety)
+        AIS-038 vs AIS-156 (4W vs 2W/3W EV Safety)
       </button>
       <button type="button" class="preset-btn" onclick="setComparison('AIS-189', 'AIS-190')" style="background:#f0f4f9;border:1px solid #b7c6d8;padding:7px 14px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;color:var(--blue-dark);">
-        🛡️ AIS-189 vs AIS-190 (Cybersecurity vs OTA Updates)
+        AIS-189 vs AIS-190 (Cybersecurity vs OTA Updates)
       </button>
       <button type="button" class="preset-btn" onclick="setComparison('AIS-039', 'AIS-040')" style="background:#f0f4f9;border:1px solid #b7c6d8;padding:7px 14px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;color:var(--blue-dark);">
-        🔋 AIS-039 vs AIS-040 (Consumption Wh/km vs Range)
+        AIS-039 vs AIS-040 (Consumption Wh/km vs Range)
       </button>
       <button type="button" class="preset-btn" onclick="setComparison('AIS-048', 'AIS-038')" style="background:#f0f4f9;border:1px solid #b7c6d8;padding:7px 14px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;color:var(--blue-dark);">
-        🔥 AIS-048 vs AIS-038 (Battery Abuse vs Vehicle Safety)
+        AIS-048 vs AIS-038 (Battery Abuse vs Vehicle Safety)
       </button>
       <button type="button" class="preset-btn" onclick="setComparison('AIS-003', 'AIS-041')" style="background:#f0f4f9;border:1px solid #b7c6d8;padding:7px 14px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;color:var(--blue-dark);">
-        🏔️ AIS-003 vs AIS-041 (Starting Gradeability vs Motor Power)
+        AIS-003 vs AIS-041 (Starting Gradeability vs Motor Power)
       </button>
       <button type="button" class="preset-btn" onclick="setComparison('AIS-138', 'AIS-038')" style="background:#f0f4f9;border:1px solid #b7c6d8;padding:7px 14px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;color:var(--blue-dark);">
-        🔌 AIS-138 vs AIS-038 (Charging Stations vs EV Safety)
+        AIS-138 vs AIS-038 (Charging Stations vs EV Safety)
       </button>
     </div>
   </div>
@@ -188,11 +188,11 @@ function compareStandards() {
     : '<span>None listed</span>';
 
   const calcBtnA = a.calculator_available
-    ? `<a class="btn-link" href="/calculator/${a.code.toLowerCase()}" style="background:#14834b;">OPEN ${a.code} CALCULATOR ⚡</a>`
+    ? `<a class="btn-link" href="/calculator/${a.code.toLowerCase()}" style="background:#14834b;">OPEN ${a.code} CALCULATOR</a>`
     : '';
 
   const calcBtnB = b.calculator_available
-    ? `<a class="btn-link" href="/calculator/${b.code.toLowerCase()}" style="background:#14834b;">OPEN ${b.code} CALCULATOR ⚡</a>`
+    ? `<a class="btn-link" href="/calculator/${b.code.toLowerCase()}" style="background:#14834b;">OPEN ${b.code} CALCULATOR</a>`
     : '';
 
   result.innerHTML = `
@@ -208,7 +208,7 @@ function compareStandards() {
         <div class="comparison-details">
           <div><span>CATEGORY</span><strong>${a.category}</strong></div>
           <div><span>VEHICLE TYPE</span><strong>${a.vehicle_type}</strong></div>
-          <div><span>EV FOCUS</span><strong>${a.ev_related ? '⚡ YES' : 'NO'}</strong></div>
+          <div><span>EV FOCUS</span><strong>${a.ev_related ? 'YES' : 'NO'}</strong></div>
           <div><span>SOURCE</span><strong>${a.source || 'ARAI Publication'}</strong></div>
         </div>
       </article>
@@ -223,7 +223,7 @@ function compareStandards() {
         <div class="comparison-details">
           <div><span>CATEGORY</span><strong>${b.category}</strong></div>
           <div><span>VEHICLE TYPE</span><strong>${b.vehicle_type}</strong></div>
-          <div><span>EV FOCUS</span><strong>${b.ev_related ? '⚡ YES' : 'NO'}</strong></div>
+          <div><span>EV FOCUS</span><strong>${b.ev_related ? 'YES' : 'NO'}</strong></div>
           <div><span>SOURCE</span><strong>${b.source || 'ARAI Publication'}</strong></div>
         </div>
       </article>

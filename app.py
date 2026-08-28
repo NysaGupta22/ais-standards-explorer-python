@@ -341,22 +341,38 @@ def ais004():
 @app.route("/api/calc/ais038", methods=["POST"])
 def ais038():
 
-    d = request.get_json()
+    d = request.get_json() or {}
 
-    u, v1, vp, v2 = map(
-        float,
-        (d["u"], d["v1"], d["vp"], d["v2"]),
-    )
+    try:
+        u = float(d.get("u", 400))
+        r0 = float(d.get("r0", 500))
+        v1 = float(d.get("v1", 420))
+        vp = float(d.get("vp", 400))
+        v2 = float(d.get("v2", 210))
 
-    minimum = u * 500
+        minimum = u * 500
 
-    ri = ((max(v1, vp) - v2) / v2) * 500
+        if v2 == 0:
+            return jsonify({"error": "V2 cannot be zero"}), 400
 
-    return jsonify({
-        "minimum_ohm": minimum,
-        "resistance_ohm": ri,
-        "pass": ri >= minimum,
-    })
+        if v1 >= vp:
+            ri = ((v1 - v2) / v2) * r0
+            active_formula = "V1 formula (V1 >= V1')"
+        else:
+            ri = ((vp - v2) / v2) * r0
+            active_formula = "V1' formula (V1' > V1)"
+
+        return jsonify({
+            "minimum_ohm": minimum,
+            "resistance_ohm": ri,
+            "r0_used": r0,
+            "active_formula": active_formula,
+            "pass": ri >= minimum,
+        })
+
+    except (ValueError, TypeError, KeyError) as e:
+        return jsonify({"error": f"Invalid input parameter: {str(e)}"}), 400
+
 
 
 # ============================================================
